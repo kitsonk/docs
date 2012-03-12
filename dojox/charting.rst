@@ -16,12 +16,11 @@ Dojo comes with an amazing charting library, in the form of dojox/charting. A la
 
   .. js ::
 
-    // Dojo 1.7+ (AMD)
-    require(["dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines", "dojox/charting/themes/Wetland" , "dojo/ready"],
-      function(Chart, Default, Lines, Wetland, ready){
+    require(["dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/StackedAreas", "dojox/charting/themes/Wetland" , "dojo/ready"],
+      function(Chart, Default, StackedAreas, Wetland, ready){
         ready(function(){
           var c = new Chart("chartOne");
-          c.addPlot("default", {type: "StackedAreas", tension:3})
+          c.addPlot("default", {type: StackedAreas, tension:3})
             .addAxis("x", {fixLower: "major", fixUpper: "major"})
             .addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major", min: 0})
             .setTheme(Wetland)
@@ -32,29 +31,9 @@ Dojo comes with an amazing charting library, in the form of dojox/charting. A la
         });
     });
 
-
-    // Dojo <1.7 (Pre-AMD)
-    dojo.require("dojox.charting.Chart2D");
-    dojo.require("dojox.charting.axis2d.Default");
-    dojo.require("dojox.charting.plot2d.Default");
-    dojo.require("dojox.charting.themes.Wetland");
-
-    dojo.ready(function(){
-      var c = new dojox.charting.Chart2D("chartTwo");
-      c.addPlot("default", {type: "StackedAreas", tension:3})
-          .addAxis("x", {fixLower: "major", fixUpper: "major"})
-          .addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major", min: 0})
-          .setTheme(dojox.charting.themes.Wetland)
-          .addSeries("Series A", [1, 2, 0.5, 1.5, 1, 2.8, 0.4])
-          .addSeries("Series B", [2.6, 1.8, 2, 1, 1.4, 0.7, 2])
-          .addSeries("Series C", [6.3, 1.8, 3, 0.5, 4.4, 2.7, 2])
-          .render();
-    });
-
   .. html ::
 
     <div id="chartOne" style="width: 400px; height: 240px; margin: 30px auto 0px auto;"></div>
-    <div id="chartTwo" style="width: 400px; height: 240px; margin: 30px auto 0px auto;"></div>
 
 
 Introduction
@@ -65,10 +44,10 @@ Dojo's Charting module provides a way to quickly and easily add great looking an
 Charting Basics
 ===============
 
-Below are two typical examples of how to create a Dojo Chart in HTML and JavaScript. The first example is using the
-the new Dojo AMD syntax for modules while the second one is basically the same using historical Dojo syntax for packages.
-Both examples are strictly equivalent in term of charting features but you are encourage starting with Dojo 1.7 to use
-the new AMD syntax. See :ref:`AMD loader documentation <loader/index>` for more details on AMD.
+Below is a typical example of how to create a Dojo Chart in HTML and JavaScript. It is using the
+the new Dojo AMD syntax for modules however you can still use the historical Dojo provide / require syntax for packages
+if you want to. However you are encouraged using the new AMD syntax. See :ref:`AMD loader documentation <loader/index>` for
+more details on AMD.
 
 .. code-example::
   :type: inline
@@ -78,16 +57,14 @@ the new AMD syntax. See :ref:`AMD loader documentation <loader/index>` for more 
 
   .. html ::
 
-    <div id="chartamd" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>
     <div id="simplechart" style="width: 250px; height: 150px; margin: 5px auto 0px auto;"></div>
 
   .. js ::
 
-      // Dojo 1.7+ (AMD)
       require(["dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines", "dojo/ready"],
         function(Chart, Default, Lines, ready){
         ready(function(){
-          var chart1 = new Chart("chartamd");
+          var chart1 = new Chart("simplechart");
           chart1.addPlot("default", {type: Lines});
           chart1.addAxis("x");
           chart1.addAxis("y", {vertical: true});
@@ -95,20 +72,6 @@ the new AMD syntax. See :ref:`AMD loader documentation <loader/index>` for more 
           chart1.render();
         });
       });
-
-      // Dojo <1.7
-      dojo.require("dojox.charting.Chart");
-      dojo.require("dojox.charting.axis2d.Default");
-      dojo.require("dojox.charting.plot2d.Lines");
-      dojo.ready(function(){
-        var chart1 = new dojox.charting.Chart("simplechart");
-        chart1.addPlot("default", {type: "Lines"});
-        chart1.addAxis("x");
-        chart1.addAxis("y", {vertical: true});
-        chart1.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
-        chart1.render();
-      });
-  
 
 As you can see from the source it is simple to create charts.
 
@@ -130,14 +93,18 @@ title    string      null    chart title text.
 And here comes an example:
 
 .. js ::
-  
-  var chart = new dojox.charting.Chart("test", {
-    title: "Production(Quantity)",
-    titlePos: "bottom",
-    titleGap: 25,
-    titleFont: "normal normal normal 15pt Arial",
-    titleFontColor: "orange"
-  })
+
+  require(["dojox/charting/Chart", "dojo/ready"], function(Chart, ready){
+    ready(function(){
+      var chart = new dojox.charting.Chart("test", {
+        title: "Production(Quantity)",
+        titlePos: "bottom",
+        titleGap: 25,
+        titleFont: "normal normal normal 15pt Arial",
+        titleFontColor: "orange"
+      });
+    }
+  });
 
 Working with Plots
 ==================
@@ -154,8 +121,11 @@ addPlot() accepts 2 parameters, a name and an arguments array. The name is impor
 **type** is the main option, with a default value being a basic line chart.
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "Areas"});
+
+  require(["dojox/charting/plot2d/Areas", ...], function(Areas, ...){
+    // ...
+    chart.addPlot("default", { type: Areas });
+  });
 
 Available 2D chart types include:
 
@@ -198,8 +168,10 @@ Lines, Areas and Markers Plots
 With any of the lines, areas or markers types you have five specific options. First, there are three options for controlling aspects of **lines**, **areas**, and **markers**. These are often defined by the chosen plot type, but can be changed to get other behaviors. The lines option determines whether or not lines are used to connect data points. If the areas type is selected, the area below the data line will be filled. The markers option will determine if markers are placed at data points.
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "StackedAreas", lines: true, areas: true, markers: false});
+
+  require(["dojox/charting/plot2d/StackedAreas", ...], function(StackedAreas, ...){
+    chart.addPlot("default", { type: StackedAreas, lines: true, areas: true, markers: false });
+  });
 
 There are also two specific graphical options, **tension** and **interpolate**.
 
@@ -210,8 +182,10 @@ Tension allows you to add some curve to the lines on you plot. By default this o
  * **"S"** for a quadratic bezier smooth lines.
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "StackedLines", tension: "S" });
+
+  require(["dojox/charting/plot2d/StackedLines", ...], function(StackedLines, ...){
+    chart.addPlot("default", {type: StackedLines, tension: "S" });
+  });
 
 Finally interpolate let's you choose the behavior when a data point is missing in the chart (i.e. its data value is null). If interpolate is false (default) a the line or area will be cut at that data point and will start back at the next valid data point. If interpolate is true, the missing data point will be interpolated and the chart continuously drawn.
 
@@ -227,22 +201,28 @@ Bar, column, and candle stick graph types have some unique option to control wid
 All three restrictions are applied in the following order: gap, minBarSize, maxBarSize.
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "Bars", gap: 5, minBarSize: 3, maxBarSize: 20});
 
+  require(["dojox/charting/plot2d/Bars", ...], function(Bars, ...){
+    chart.addPlot("default", { type: Bars, gap: 5, minBarSize: 3, maxBarSize: 20 });
+  });
+  
 In addition the bar and column graph types can benefit from gfx shapes caching when rendered in order to improve further rendering performances. To enable this option do the following:
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "Columns", enableCache: true});
 
+  require(["dojox/charting/plot2d/Columns", ...], function(Columns, ...){
+    chart.addPlot("default", {type: Columns, enableCache: true});
+  });
+  
 Note that you should enable it only if you except the chart to re-render often like for example when you intend to zoom it in or out in order to not penalize first rendering for nothing.
 
 For any chart type that supports axes, you can also define custom names to your axes here. By default they are "x" and "y", but this option becomes useful if you wish to have a chart with multiple plots and multiple axes.
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "Bars", hAxis: "cool x", vAxis: "super y"});
+
+  require(["dojox/charting/plot2d/Bars", ...], function(Bars, ...){
+    chart.addPlot("default", { type: Bars, hAxis: "cool x", vAxis: "super y" });
+  });
 
 Pie Plot
 ~~~~~~~~
@@ -264,7 +244,7 @@ Pie charts have a separate list of parameters. Here are the parameters for the p
       font: "",
       fontColor: "",
       radius: 0
-  },
+  }
 
 Style on Lines, Areas, Bars, Columns and Pie plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -279,21 +259,25 @@ Shadows can be added to a plot on data points as follows:
 
 .. js ::
 
-  chart1.addPlot("default", {type: "Lines", markers: true,
-      tension: "X", shadow: {dx: 2, dy: 2}});
-      
+  require(["dojox/charting/plot2d/Lines", ...], function(Lines, ...){
+    chart.addPlot("default", { type: Lines, markers: true,
+      tension: "X", shadow: {dx: 2, dy: 2} });
+  });
+  
 Finally if you need to specify the style of your plot elements depending on a function you can use the **styleFunc** property of these plots to compute the color based for example on data values:
 
 .. js ::
 
-  chart1.addPlot("default", {type: "Columns", styleFunc: function(item){
-    if(item.y < 10){
-      return { fill : "red" };
-    }else if(item.y > 60){
-      return { fill: "green" };
-    }
-    return {}
-  }});
+  require(["dojox/charting/plot2d/Columns", ...], function(Columns, ...){
+    chart.addPlot("default", { type: Columns, styleFunc: function(item){
+      if(item.y < 10){
+        return { fill : "red" };
+      }else if(item.y > 60){
+        return { fill: "green" };
+      }
+      return {};
+    }});
+  });
 
 Spider Plot
 ~~~~~~~~~~~
@@ -320,23 +304,26 @@ Spider chart also keeps a separate list of parameters. Here comes the parameters
 And here is an example for spider chart:
 
 .. js ::
-  
-  chart.addPlot("default", {
-    type:         "Spider",
-    labelOffset:      -10,
-    divisions:           5,
-    seriesFillAlpha:     0.2,
-    markerSize:       3,
-    precision:         0,
-    spiderType:          "polygon"
+
+  require(["dojox/charting/plot2d/Spider", "dojox/charting/widget/SelectableLegend", ...], function(Spider, SelectableLegend, ...){
+     // ...
+    chart.addPlot("default", {
+      type: Spider,
+      labelOffset: -10,
+      divisions: 5,
+      seriesFillAlpha: 0.2,
+      markerSize: 3,
+      precision: 0,
+      spiderType: "polygon"
+    });
+    chart.addSeries("China", {data: {"GDP": 2, "area": 6, "population": 2000, "inflation": 15, "growth": 12}}, { fill: "blue" });
+    chart.addSeries("USA", {data: {"GDP": 3, "area": 20, "population": 1500, "inflation": 10, "growth": 3}}, { fill: "green" });
+    // ...
+    chart.addSeries("Canada", {data: {"GDP": 1, "area": 18, "population": 300, "inflation": 3, "growth": 15}}, { fill: "purple" });
+    chart.render();
+
+    var legend = new SelectableLegend({chart: chart, horizontal: true}, "legend");
   });
-  chart.addSeries("China", {data: {"GDP": 2, "area": 6, "population": 2000, "inflation": 15, "growth": 12}}, { fill: "blue" });
-  chart.addSeries("USA", {data: {"GDP": 3, "area": 20, "population": 1500, "inflation": 10, "growth": 3}}, { fill: "green" });
-  ...
-  chart.addSeries("Canada", {data: {"GDP": 1, "area": 18, "population": 300, "inflation": 3, "growth": 15}}, { fill: "purple" });
-  chart.render();
-        
-  var legend = new dc.widget.SelectableLegend({chart: chart, horizontal: true}, "legend");
 
 The Spider plot contains as many axes as the number of dimensions in its data (5 in the example above). By default each axis minimum and maximum is computed from the data. You can override this (for example if you have a single data series) by explicitly adding axis to you charts instead of relying on the default mechanism. In the following example the minimum and maxium for GDP axis is overridden:
 
@@ -360,30 +347,36 @@ the following four boolean options to determine if lines will be displayed at th
 minor axis tick marks.
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "Grid",
+
+  require(["dojox/charting/plot2d/Grid", ...], function(Grid, ...){
+    chart.addPlot("default", { type: "Grid",
           hMajorLines: true,
           hMinorLines: false,
           vMajorLines: true,
-          vMinorLines: false});
+          vMinorLines: false });
+  });
 
 If you need the grid to be aligned with alternate axes you can do the following:
 
 .. js ::
 
-  chart1.addPlot("Grid", {type: "Grid",
-    hAxis: "other x",
-    vAxis: "other y",
+  require(["dojox/charting/plot2d/Grid", ...], function(Grid, ...){
+    chart1.addPlot("Grid", { type: Grid,
+      hAxis: "other x",
+      vAxis: "other y",
+    });
   });
 
 Similarly to the axis if your grid is changing often you can use the enableCache option to improve further renderings:
 
 .. js ::
 
-  chart1.addPlot("Grid", {type: "Grid",
-    hAxis: "other x",
-    vAxis: "other y",
-    enableCache: true
+  require(["dojox/charting/plot2d/Grid", ...], function(Grid, ...){
+    chart.addPlot("Grid", { type: Grid,
+      hAxis: "other x",
+      vAxis: "other y",
+      enableCache: true
+    });
   });
 
 
@@ -393,16 +386,19 @@ Multiple Plots
 One last feature I'd like to touch on is adding multiple plots to the same chart. Multiple plots can be of differing types and can all be configured separately. Each plot you add with addPlot() will be layered behind the previous plot. In addition, plots can have their own axes or share them with other plots on the chart. Now, if we add an areas plot to our lines example, we can create the following effect.
 
 .. js ::
-  
-  var chart1 = new dojox.charting.Chart2D("simplechart");
-  chart1.addPlot("default", {type: "Lines"});
-  chart1.addPlot("other", {type: "Areas"});
-  chart1.addAxis("x");
-  chart1.addAxis("y", {vertical: true});
-  chart1.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
-  chart1.addSeries("Series 2", [1, 1, 4, 2, 1, 6, 4, 3],
+
+  require(["dojox/charting/Chart", "dojox/charting/plot2d/Lines", "dojox/charting/plot2d/Areas", ...],
+    function(Chart, Lines, Areas, ...){
+    var chart = new Chart("simplechart");
+    chart.addPlot("default", {type: Lines});
+    chart.addPlot("other", {type: Areas});
+    chart.addAxis("x");
+    chart.addAxis("y", {vertical: true});
+    chart.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
+    chart.addSeries("Series 2", [1, 1, 4, 2, 1, 6, 4, 3],
       {plot: "other", stroke: {color:"blue"}, fill: "lightblue"});
-  chart1.render();
+    chart.render();
+  });
 
 The charting library is also very flexible in terms of combining chart types, as well as multiple axes. You can set up custom labels for a specific axis, you can set up custom markers for points on a number of different types of charts, and you can even create your own themes for a chart!
 
@@ -423,7 +419,9 @@ When a plot is rendered an animation can be triggered. In order to enable this, 
 
 .. js ::
 
-  chart1.addPlot("cols", {type: "Columns", animate: { duration: 1000, easing: dojox.fx.easing.linear} });
+  require(["dojox/charting/plot2d/Columns", "dojo/fx/easing", ...], function(Columns, easing, ...){
+    chart.addPlot("cols", {type: Columns, animate: { duration: 1000, easing: easing.linear} });
+  });
   
 
 The animate parameter is itself an object that can takes several parameters including:
@@ -448,40 +446,45 @@ When you are using Cartesian plots you can use the addAxis() method on a chart w
 The first option is vertical, this determines if the axis is vertical or horizontal, it defaults to false for a horizontal axis. Make sure that your alignment matches with values set for hAxis and vAxis, which are "x" and "y" by default, on your plot or your chart will not render.
 
 .. js ::
-  
-  chart1.addPlot("default", {type: "Lines", hAxis: "x", vAxis: "y"});
-  chart1.addAxis("x");
-  chart1.addAxis("y", {vertical: true});
+
+  require(["dojox/charting/plot2d/Lines", ...], function(Columns, ...){
+    chart.addPlot("default", {type: "Lines", hAxis: "x", vAxis: "y"});
+    chart.addAxis("x");
+    chart.addAxis("y", {vertical: true});
+  });
 
 Next we have the fixUpper and fixLower options, which align the ticks and have 4 available options; major, minor, micro, and none. These default to none, and when set will force the end bounds to align to the corresponding tick division. If none is chosen, the end bounds will be the highest and lowest values in your data set. Another related option is the includeZero option, which will make your lower bound be zero. If your lowest data value is negative the includeZero option has no effect.
 
 .. js ::
   
-  chart1.addAxis("x", {fixUpper: "major", fixLower:"minor"});
-  chart1.addAxis("y", {vertical: true, fixUpper: "major", includeZero: true});
+  chart.addAxis("x", {fixUpper: "major", fixLower:"minor"});
+  chart.addAxis("y", {vertical: true, fixUpper: "major", includeZero: true});
 
 Now let's examine the leftBottom option. This option defaults to true, and along with the vertical option determines the side of the chart the axis is placed. At the end of Part 1 we examined adding a second plot to our chart. Let's use that sample and give the second plot its own set of axes and anchor them on the top and right using leftBottom.
 
 .. js ::
-  
-  var chart1 = new dojox.charting.Chart2D("simplechart");
-  chart1.addPlot("default", {type: "Lines"});
-  chart1.addPlot("other", {type: "Areas", hAxis: "other x", vAxis: "other y"});
-  chart1.addAxis("x");
-  chart1.addAxis("y", {vertical: true});
-  chart1.addAxis("other x", {leftBottom: false});
-  chart1.addAxis("other y", {vertical: true, leftBottom: false});
-  chart1.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
-  chart1.addSeries("Series 2", [1, 1, 4, 2, 1, 6, 4, 3],
+
+  require(["dojox/charting/Chart", "dojox/charting/plot2d/Lines", ...], function(Chart, Lines, ...){
+    // ...
+    var chart = new Chart("simplechart");
+    chart.addPlot("default", {type: Lines});
+    chart.addPlot("other", {type: "Areas", hAxis: "other x", vAxis: "other y"});
+    chart.addAxis("x");
+    chart.addAxis("y", {vertical: true});
+    chart.addAxis("other x", {leftBottom: false});
+    chart.addAxis("other y", {vertical: true, leftBottom: false});
+    chart.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
+    chart.addSeries("Series 2", [1, 1, 4, 2, 1, 6, 4, 3],
           {plot: "other", stroke: {color:"blue"}, fill: "lightblue"}
-  );
-  chart1.render();
+    );
+    chart.render();
+  });
 
 Finally another option is the enableCache parameter. If your axis are meant to be often re-rendered (that is the case for example if you use a mouse or touch zoom action on the chart) it might be good to cache the underlying gfx objects and not re-create them. For that do:
 
 .. js ::
   
-  chart1.addSeries("Series 2", [1, 1, 4, 2, 1, 6, 4, 3],
+  chart.addSeries("Series 2", [1, 1, 4, 2, 1, 6, 4, 3],
           {plot: "other", stroke: {color:"blue"}, fill: "lightblue", enableCache: true, htmlLabels: false}
   );
   
@@ -550,7 +553,7 @@ The color of the axis, the color and length of your tick marks and the font and 
 
 .. js ::
   
-  chart1.addAxis("other y", {vertical: true,
+  chart.addAxis("other y", {vertical: true,
     leftBottom: false,
     max: 7,
     stroke: "green",
@@ -574,7 +577,7 @@ This code excerpt shows how to use the axis labels property to display abbreviat
 
 .. js ::
   
-  chart1.addAxis("x", {
+  chart.addAxis("x", {
       labels: [{value: 1, text: "Jan"}, {value: 2, text: "Feb"},
           {value: 3, text: "Mar"}, {value: 4, text: "Apr"},
           {value: 5, text: "May"}, {value: 6, text: "Jun"},
@@ -594,7 +597,7 @@ In the following code the labeling function is used to add a unit after the expe
   var myLabelFunc = function(text, value, precision){
      return text+" my unit";
   };
-  chart1.addAxis("x", { labelFunc: myLabelFunc });
+  chart.addAxis("x", { labelFunc: myLabelFunc });
 
 The first parameter of the labeling function is the text already formatted by the default processing. The second parameter is the raw value for that label and the third one is the desired precision for display. Note that all parameters are optional.
 
@@ -602,12 +605,13 @@ Note that by default the axis make sure to drop superfluous labels to avoid them
 
 .. js ::
 
-  chart1.addAxis("x", { dropLabels: false });
+  chart.addAxis("x", { dropLabels: false });
 
 The drop labels mechanism computes once the size of the labels at initialization time and recompute how many must be dropped when zooming in or out the chart. However in some cases the labels size is varying with the zoom levels. In that case you need to explicitly set the labelSizeChange property on the chart for it to recompute the size of the labels on each zoom level:
 
 .. js ::
-  chart1.addAxis("x", { labelSizeChange: true });
+
+  chart.addAxis("x", { labelSizeChange: true });
 
 Note that this will hurt performances, so enable this only if your labels are changing size on zoom and you noticed the drop labels mechanism does not work when zooming in or out the chart.
 
@@ -615,7 +619,7 @@ Also if you keep dropLabels to true, and you know minor labels won't show up or 
 
 .. js ::
 
-  chart1.addAxis("x", { minorLabels: false });
+  chart.addAxis("x", { minorLabels: false });
 
 
 TODO: Month Labels Example
@@ -645,7 +649,7 @@ There are only a few options to cover for the addSeries() call. First up is stro
 
 .. js ::
   
-  chart1.addSeries("Series 1", [1, 2, 4, 5, 5, 7], {stroke: {color: "blue", width: 2},
+  chart.addSeries("Series 1", [1, 2, 4, 5, 5, 7], {stroke: {color: "blue", width: 2},
       fill: "lightblue"});
 
 The other option is marker and it allows you to define custom markers using SVG path segments. Here are some of marker types as defined in the Dojo Charting source code. Note that each is just defined internally as an SVG path:
@@ -668,15 +672,15 @@ The data array, is just an array of data. All plot types can accept a one dimens
 
 .. js ::
   
-  chart1.addSeries("Series A", [1, 2, 3, 4, 5]);
+  chart.addSeries("Series A", [1, 2, 3, 4, 5]);
 
 For any non "stacked" line plot type you can specify coordinate pairs. You need to use keys that correspond to the hAxis and vAxis parameters defined in the addPlot() call. These default to x and y.
 
 .. js ::
   
-  chart1.addSeries("Series A", [{x: 1, y: 5}, {x: 1.5, y: 1.7},
+  chart.addSeries("Series A", [{x: 1, y: 5}, {x: 1.5, y: 1.7},
       {x: 2, y: 9}, {x: 5, y: 3}]);
-  chart1.addSeries("Series B", [{x: 3, y: 8.5}, {x: 4.2, y: 6}, {x: 5.4, y: 2}]);
+  chart.addSeries("Series B", [{x: 3, y: 8.5}, {x: 4.2, y: 6}, {x: 5.4, y: 2}]);
 
 Here is an example of using coordinate pairs with a scatter plot:
 
@@ -686,8 +690,8 @@ With any of the stacked plot types each data set added with addSeries() is place
 
 .. js ::
   
-  chart1.addSeries("Series 1", [1, 2, 3, 4, 5]);
-  chart1.addSeries("Series 2", [1, 1, 1, 1, 1], {stroke: {color: "red"}});
+  chart.addSeries("Series 1", [1, 2, 3, 4, 5]);
+  chart.addSeries("Series 2", [1, 1, 1, 1, 1], {stroke: {color: "red"}});
 
 TODO: Example Stacked Data Series
 
@@ -695,7 +699,7 @@ For pie type charts you can specify additional information: the text label for e
 
 .. js ::
   
-  chart1.addSeries("Series A", [
+  chart.addSeries("Series A", [
       {y: 4, color: "red"},
       {y: 2, color: "green"},
       {y: 1, color: "blue"},
@@ -1043,14 +1047,18 @@ MouseZoomAndPan supports several additional parameters:
 Here is an example showing how to attach a MouseZoomAndPan action to the chart and configure it:
 
 .. js ::
-  
-  var chart = new dojox.charting.Chart("test");
-  chart.addAxis("x", {type : "Default", enableCache: true});
-  chart.addAxis("y", {vertical: true});
-  chart.addPlot("default", {type: "Columns", enableCache: true});
-  chart.addSeries("Series A", [ ... ]);
-  new dojox.charting.action2d.MouseZoomAndPan(chart, "default", { axis: "x", "none" });
-  chart.render()
+
+  require(["dojox/charting/Chart", "dojox/charting/plot2d/Default", "dojox/charting/plot2d/Columns",
+    "dojox/charting/action2d/MouseZoomAndPan", ...],
+    function(Chart, Default, Columns, MouseZoomAndPan, ...){
+    var chart = new Chart("test");
+    chart.addAxis("x", {type : Default, enableCache: true});
+    chart.addAxis("y", {vertical: true});
+    chart.addPlot("default", {type: Columns, enableCache: true});
+    chart.addSeries("Series A", [ ... ]);
+    new MouseZoomAndPan(chart, "default", { axis: "x", "none" });
+    chart.render()
+  });
 
 
 MouseIndicator
@@ -1079,21 +1087,25 @@ It also includes several styling additional parameters that allows to change the
 Here is an example showing how to attach a MouseIndicator action to the chart and configure it:
 
 .. js ::
-  
-  var chart = new dojox.charting.Chart("test");
-  chart.addAxis("x", {type : "Default", enableCache: true});
-  chart.addAxis("y", {vertical: true});
-  chart.addPlot("default", {type: "Columns", enableCache: true});
-  chart.addSeries("Series A", [ ... ]);
-  new dojox.charting.action2d.MouseIndicator(chart, "default", { series: "Series A",
+
+  require(["dojox/charting/Chart", "dojox/charting/plot2d/Default", "dojox/charting/plot2d/Columns",
+    "dojox/charting/action2d/MouseIndicator", ...],
+    function(Chart, Default, Columns, MouseIndicator, ...){
+    var chart = new Chart("test");
+    chart.addAxis("x", {type : Default, enableCache: true});
+    chart.addAxis("y", {vertical: true});
+    chart.addPlot("default", {type: Columns, enableCache: true});
+    chart.addSeries("Series A", [ ... ]);
+    new MouseIndicator(chart, "default", { series: "Series A",
       font: "normal normal bold 12pt Tahoma",
       fillFunc: function(v){
-    return v.y>55?"green":"red";
+        return v.y>55?"green":"red";
       },
       labelFunc: function(v){
         return "x: "+v.x+", y:"+v.y;
       }});
-  chart.render();
+    chart.render();
+  });
 
 TouchZoomAndPan
 ---------------
@@ -1119,14 +1131,18 @@ TouchZoomAndPan supports several additional parameters:
 Here is an example showing how to attach a TouchZoomAndPan action to the chart and configure it:
 
 .. js ::
-  
-  var chart = new dojox.charting.Chart("test");
-  chart.addAxis("x", {type : "Default", enableCache: true});
-  chart.addAxis("y", {vertical: true});
-  chart.addPlot("default", {type: "Columns", enableCache: true});
-  chart.addSeries("Series A", [ ... ]);
-  new dojox.charting.action2d.TouchZoomAndPan(chart, "default", { axis: "x" });
-  chart.render()
+
+  require(["dojox/charting/Chart", "dojox/charting/plot2d/Default", "dojox/charting/plot2d/Columns",
+    "dojox/charting/action2d/TouchZoomAndPan", ...],
+    function(Chart, Default, Columns, TouchZoomAndPan, ...){
+    var chart = new Chart("test");
+    chart.addAxis("x", {type : "Default", enableCache: true});
+    chart.addAxis("y", {vertical: true});
+    chart.addPlot("default", {type: "Columns", enableCache: true});
+    chart.addSeries("Series A", [ ... ]);
+    new TouchZoomAndPan(chart, "default", { axis: "x" });
+    chart.render();
+  });
 
 
 TouchIndicator
@@ -1157,23 +1173,27 @@ It also includes several styling additional parameters that allows to change the
 Here is an example showing how to attach a TouchIndicator action to the chart and configure it:
 
 .. js ::
-  
-  var chart = new dojox.charting.Chart("test");
-  chart.addAxis("x", {type : "Default", enableCache: true});
-  chart.addAxis("y", {vertical: true});
-  chart.addPlot("default", {type: "Columns", enableCache: true});
-  chart.addSeries("Series A", [ ... ]);
-  new dojox.charting.action2d.TouchIndicator(chart, "default", {
+
+  require(["dojox/charting/Chart", "dojox/charting/plot2d/Default", "dojox/charting/plot2d/Columns",
+    "dojox/charting/action2d/TouchIndicator", ...],
+    function(Chart, Default, Columns, TouchIndicator, ...){
+  	var chart = new Chart("test");
+  	chart.addAxis("x", {type : Default, enableCache: true});
+  	chart.addAxis("y", {vertical: true});
+  	chart.addPlot("default", {type: Columns, enableCache: true});
+  	chart.addSeries("Series A", [ ... ]);
+  	new TouchIndicator(chart, "default", {
      series: "Series A", dualIndicator : true, font: "normal normal bold 16pt Tahoma",
      fillFunc: function(v1, v2){
-    if(v2){
-      return v2.y>v1.y?"green":"red";
-        }else{
-      return "white";
-    }
+       if(v2){
+        return v2.y>v1.y?"green":"red";
+       }else{
+        return "white";
+       }
      }
+    });
+    chart.render();
   });
-  chart.render();
 
 
 Using Actions
@@ -1197,11 +1217,11 @@ All action objects implement the following methods (no parameters are expected b
 All actions can be constructed like this:
 
 .. js ::
-  
-  var a = new dojox.charting.action2d.Magnify(
-    chart1,
-    "default",
-    {duration: 200, scale: 1.1});
+
+  require(["dojox/charting/action2d/Magnify", ...], function(Magnify, ...){
+    // ...
+    var a = new Magnify(chart, "default", {duration: 200, scale: 1.1});
+  });
 
 The first parameter is a chart. The second parameter is the name of a plot. The third parameter is an object (property bag) with all relevant keyword parameters.
 
@@ -1219,7 +1239,7 @@ One of the easiest ways to use Dojo Charting is is to use the Chart2D widget. Th
 
 .. html ::
   
-  <div data-dojo-type="dojox.charting.widget.Chart2D" id="chart4"
+  <div data-dojo-type="dojox/charting/widget/Chart" id="chart4"
       theme="dojox.charting.themes.PlotKit.green"
       style="width: 300px; height: 300px;">
     <div class="plot" name="default" type="Pie" radius="100"
@@ -1243,8 +1263,11 @@ Interactive Legend Widget
 An interactive legend for all dojo charts that allows the end-user to click and select/deselect which of the chart series should be displayed on the chart. And series will be highlighted when corresponding legend icon is hovered. By default the border and the body of series vanished when series deselected, you can set "outline" as "true" to keep the border of vanished series. The declaration of interactive legend is as follows.
 
 .. js ::
-  
-  var selectableLegend = new dojox.charting.widget.SelectableLegend({chart: chart1, outline: true}, "selectableLegend");
+
+  require(["dojox/charting/widget/SelectableLegend", ...], function(SelectableLegend, ...){
+    // ...
+    var selectableLegend = new SelectableLegend({chart: chart, outline: true}, "selectableLegend");
+  });
 
 
 Examples
@@ -1259,19 +1282,20 @@ Here is a very simple example of a stacked area chart.
 
   .. js ::
 
-    dojo.require("dojox.charting.Chart2D");
-    dojo.require("dojox.charting.themes.Wetland");
-
-    dojo.ready(function(){
-      var c = new dojox.charting.Chart2D("chartOne");
-      c.addPlot("default", {type: "StackedAreas", tension:3})
+    require(["dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/StackedAreas",
+       "dojox/charting/themes/Wetland" , "dojo/ready"],
+      function(Chart, Default, StackedAreas, Wetland, ready){
+      ready(function(){
+        var c = new Chart("chartOne");
+        c.addPlot("default", {type: StackedAreas, tension:3})
           .addAxis("x", {fixLower: "major", fixUpper: "major"})
-      .addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major", min: 0})
-          .setTheme(dojox.charting.themes.Wetland)
+          .addAxis("y", {vertical: true, fixLower: "major", fixUpper: "major", min: 0})
+          .setTheme(Wetland)
           .addSeries("Series A", [1, 2, 0.5, 1.5, 1, 2.8, 0.4])
           .addSeries("Series B", [2.6, 1.8, 2, 1, 1.4, 0.7, 2])
           .addSeries("Series C", [6.3, 1.8, 3, 0.5, 4.4, 2.7, 2])
           .render();
+      });
     });
  
   .. html ::
@@ -1287,35 +1311,31 @@ Here is a pie chart, with slice information shown onmouseover and a legend:
 
   .. js ::
 
-    dojo.require("dojox.charting.Chart2D");
-    dojo.require("dojox.charting.plot2d.Pie");
-    dojo.require("dojox.charting.action2d.Highlight");
-    dojo.require("dojox.charting.action2d.MoveSlice");
-    dojo.require("dojox.charting.action2d.Tooltip");
-    dojo.require("dojox.charting.themes.MiamiNice");
-    dojo.require("dojox.charting.widget.Legend");
-
-    dojo.ready(function(){
-      var dc = dojox.charting;
-      var chartTwo = new dc.Chart2D("chartTwo");
-      chartTwo.setTheme(dc.themes.MiamiNice)
+    require(["dojox/charting/Chart", "dojox/charting/plot2d/Pie", "dojox/charting/action2d/Highlight",
+             "dojox/charting/action2d/MoveSlice" , "dojox/charting/action2d/Tooltip",
+             "dojox/charting/themes/MiamiNice", "dojox/charting/widget/Legend", "dojo/ready"],
+      function(Chart, Pie, Highlight, MoveSlice, Tooltip, MiamiNice, Legend, ready){
+      ready(function(){
+        var chartTwo = new Chart("chartTwo");
+        chartTwo.setTheme(MiamiNice)
          .addPlot("default", {
-            type: "Pie",
+            type: Pie,
             font: "normal normal 11pt Tahoma",
             fontColor: "black",
             labelOffset: -30,
             radius: 80
-      }).addSeries("Series A", [
-          {y: 4, text: "Red",   stroke: "black", tooltip: "Red is 50%"},
-          {y: 2, text: "Green", stroke: "black", tooltip: "Green is 25%"},
-          {y: 1, text: "Blue",  stroke: "black", tooltip: "I am feeling Blue!"},
-          {y: 1, text: "Other", stroke: "black", tooltip: "Mighty <strong>strong</strong><br>With two lines!"}
-      ]);
-      var anim_a = new dc.action2d.MoveSlice(chartTwo, "default");
-      var anim_b = new dc.action2d.Highlight(chartTwo, "default");
-      var anim_c = new dc.action2d.Tooltip(chartTwo, "default");
-      chartTwo.render();
-      var legendTwo = new dojox.charting.widget.Legend({chart: chartTwo}, "legendTwo");
+        }).addSeries("Series A", [
+            {y: 4, text: "Red",   stroke: "black", tooltip: "Red is 50%"},
+            {y: 2, text: "Green", stroke: "black", tooltip: "Green is 25%"},
+            {y: 1, text: "Blue",  stroke: "black", tooltip: "I am feeling Blue!"},
+            {y: 1, text: "Other", stroke: "black", tooltip: "Mighty <strong>strong</strong><br>With two lines!"}
+        ]);
+        var anim_a = new MoveSlice(chartTwo, "default");
+        var anim_b = new Highlight(chartTwo, "default");
+        var anim_c = new Tooltip(chartTwo, "default");
+        chartTwo.render();
+        var legendTwo = new Legend({chart: chartTwo}, "legendTwo");
+      });
     });
 
   .. html ::
@@ -1332,26 +1352,23 @@ Here is a clustered bar chart with a rendering animation:
 
   .. js ::
 
-      dojo.require("dojox.charting.Chart2D");
-      dojo.require("dojox.charting.axis2d.Default");
-      dojo.require("dojox.charting.plot2d.ClusteredColumns");
-      dojo.require("dojo.fx.easing");
-      dojo.require("dojox.charting.themes.Tufte");
-  
- 
-      dojo.ready(function(){
-          var animChart = new dojox.charting.Chart2D("animChart");
-          animChart.setTheme(dojox.charting.themes.Tufte).
-               addAxis("x", { fixLower: "minor", fixUpper: "minor", natural: true }).
-                   addAxis("y", { vertical: true, fixLower: "major", fixUpper: "major", includeZero: true }).
-               addPlot("default", { type: "ClusteredColumns", gap: 10, animate: { duration: 2000, easing: dojo.fx.easing.bounceInOut } }).
-               addSeries("Series A", [ 2, 1, 0.5, -1, -2 ] ).
-               addSeries("Series B", [ -2, -1, -0.5, 1, 2 ] ).
-               addSeries("Series C", [ 1, 0.5, -1, -2, -3 ] ).
-               addSeries("Series D", [ 0.7, 1.5, -1.2, -1.25, 3 ] ).
-               render();
+    require(["dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/ClusteredColumns",
+             "dojo/fx/easing" , "dojox/charting/themes/Tufte", "dojo/ready"],
+      function(Chart, Default, ClusteredColumns, easing, Tufte, ready){
+      ready(function(){
+        var animChart = new Chart("animChart");
+        animChart.setTheme(Tufte).
+          addAxis("x", { fixLower: "minor", fixUpper: "minor", natural: true }).
+          addAxis("y", { vertical: true, fixLower: "major", fixUpper: "major", includeZero: true }).
+          addPlot("default", { type: ClusteredColumns, gap: 10, animate: { duration: 2000, easing: easing.bounceInOut } }).
+          addSeries("Series A", [ 2, 1, 0.5, -1, -2 ] ).
+          addSeries("Series B", [ -2, -1, -0.5, 1, 2 ] ).
+          addSeries("Series C", [ 1, 0.5, -1, -2, -3 ] ).
+          addSeries("Series D", [ 0.7, 1.5, -1.2, -1.25, 3 ] ).
+          render();
       });
-
+    });
+    
   .. html ::
 
     <div id="animChart" style="width: 300px; height: 300px;"></div>
@@ -1366,12 +1383,10 @@ See :ref:`Plots Animation <dojox/charting>` for more details.
 
   .. js ::
 
-        dojo.require("dojox.charting.Chart3D");
-        dojo.require("dojox.charting.plot3d.Bars");
-
-        dojo.ready(function(){
-            var m = dojox.gfx3d.matrix;
-            var chart3d = new dojox.charting.Chart3D("chart3d",
+    require(["dojox/charting/Chart3D", "dojox/charting/plot3d/Bars", "dojox/gfx3d/matrix", "dojo/ready"],
+      function(Chart3D, Bars, m, ready){
+        ready(function(){
+            var chart3d = new Chart3D("chart3d",
                 {
                     lights:   [{direction: {x: 5, y: 5, z: -5}, color: "white"}],
                     ambient:  {color:"white", intensity: 2},
@@ -1380,20 +1395,21 @@ See :ref:`Plots Animation <dojox/charting>` for more details.
                 [m.cameraRotateXg(10), m.cameraRotateYg(-10), m.scale(0.8), m.cameraTranslate(-50, -50, 0)]
             );
 
-            var bars3d_a = new dojox.charting.plot3d.Bars(500, 500, {gap: 10, material: "yellow"});
+            var bars3d_a = new Bars(500, 500, {gap: 10, material: "yellow"});
             bars3d_a.setData([1, 2, 3, 2, 1, 2, 3, 4, 5]);
             chart3d.addPlot(bars3d_a);
 
-            var bars3d_b = new dojox.charting.plot3d.Bars(500, 500, {gap: 10, material: "red"});
+            var bars3d_b = new Bars(500, 500, {gap: 10, material: "red"});
             bars3d_b.setData([2, 3, 4, 3, 2, 3, 4, 5, 5]);
             chart3d.addPlot(bars3d_b);
 
-            var bars3d_c = new dojox.charting.plot3d.Bars(500, 500, {gap: 10, material: "blue"});
+            var bars3d_c = new Bars(500, 500, {gap: 10, material: "blue"});
             bars3d_c.setData([3, 4, 5, 4, 3, 4, 5, 5, 5]);
             chart3d.addPlot(bars3d_c);
 
             chart3d.generate().render();
         });
+    });
 
   .. html ::
 
