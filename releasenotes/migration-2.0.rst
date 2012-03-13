@@ -104,15 +104,63 @@ Notice that the module (a.k.a. file) itself is *returning* a value.   That's the
 
 Also, notice how the module name previously listed in the dojo.provide() call ("acme.Dialog" in the example above) is not listed anymore.   The file name itself suffices.
 
+I18N
+----
+
+dojo.requireLocalization() has been replaced by the dojo.i18n! plugin:
+
+Old syntax:
+
+.. js ::
+
+    dojo.require("dojo.i18n");
+    dojo.requireLocalization("dijit.form", "validate");
+    var validate = dojo.i18n.getLocalization("dijit.form", "validate");
+    console.log(validate.invalidMessage);
+
+New syntax:
+
+.. js ::
+
+    require(["dojo/i18n!dijit/form/nls/validate"], function(i18n){
+        console.log(i18n.invalidMessage);
+    });
+
+
+Loading text
+------------
+
+Use the :ref:`dojo/text! <dojo/text>` plugin instead.
+
+Old syntax:
+
+.. js ::
+
+    var text = dojo.cache("my.module", "template.html");
+    ...
+
+New syntax:
+
+.. js ::
+
+    require("dojo/text!my/module/template.html", function(text){
+        ...
+    });
+
+
 quick reference
-~~~~~~~~~~~~~~~
+---------------
 =====================================================   ============================   ====================================
 1.x syntax                                              2.0 module                     2.0 syntax
 =====================================================   ============================   ====================================
+dojo.provide("foo/bar"); dojo.require("a/b"); ...                                      define(["a/b"], function(b){ ... });
 dojo.require(a.b); a.b.foo();                                                          require(["a/b"], function(b){ b.foo(); }
 djConfig                                                                               data-dojo-config
-dojo._Url                                               dojo/_Url                      require.toUrl()
-dojo.moduleUrl("dijit", "foo.template.html)             require                        require.toUrl("dijit/foo/template.html")
+dojo._Url                                                                              require.toUrl()
+dojo.moduleUrl("dijit", "foo.template.html")            require                        require.toUrl("dijit/foo/template.html")
+dojo.requireLocalization()                              dojo/i18n!                     see I18N section above
+dojo.getLocalization()                                  dojo/i18n!                     see I18N section above
+dojo.cache("my.module", "template.html")                dojo/text!                     require("dojo/text!my/module/template.html", function(text){ ...
 =====================================================   ============================   ====================================
 
 
@@ -176,6 +224,7 @@ dojo/_base/kernel
 dojo.deprecated                                         dojo/_base/kernel              kernel.deprecated
 dojo.experimental                                       dojo/_base/kernel              kernel.experimental
 dojo.version                                            dojo/_base/kernel              kernel.version
+dojo.eval                                               dojo/json                      native eval() or json.parse() for json
 =====================================================   ============================   ====================================
 
 dojo/_base/array
@@ -796,11 +845,6 @@ Declaring classes
 -----------------
 TBD.   dojo.declare() may be replaced by ComposeJS, or may have more modest changes.
 
-I18N
-----
-TODO: change in message file format
-
-
 
 FX
 --
@@ -855,7 +899,6 @@ dojo.dnd.*                                              dojo/dnd/*
 dojo.DeferredList                                       dojo/DeferredList
 dojo.hash                                               dojo/hash                      hash
 dojo.html                                               dojo/html                      html
-dojo.i18n                                               dojo/i18n                      i18n
 dojo.currency                                           dojo/currency                  currency
 dojo.number                                             dojo/number                    number
 dojo.string                                             dojo/string                    string
