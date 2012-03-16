@@ -148,6 +148,15 @@ New syntax:
     });
 
 
+URLs
+----
+Most of the time you use the dojo/text! plugin to load text from a specific URL,
+but if you need an actual URL in your classes you should use require.toUrl().
+
+See :ref:`require.toUrl() <loader/amd#utility-functions>` and
+:ref:`context sensitive require <loader/amd#context-sensitive-require>` for details.
+
+
 quick reference
 ---------------
 =====================================================   ============================   ====================================
@@ -419,6 +428,7 @@ The dojo onkeypress simulation has been desupported.   You should use keydown or
 event delegation
 ~~~~~~~~~~~~~~~~
 The dojo.behavior and dojox.NodeList.delegate modules have been replaced by functionality built-in to on().
+
 Old code:
 
 .. js ::
@@ -484,8 +494,11 @@ quick reference
 =====================================================   ============================   ====================================
 1.x syntax                                              2.0 module                     2.0 syntax
 =====================================================   ============================   ====================================
-dojo.connect(node,"onclick",cb)                         dojo/on                        on(node,"click",cb)
-dojo.disconnect(handle)                                                                handle.remove();
+dojo.connect(node,"onclick",cb)                         dojo/on                        on(node,"click",cb)   (note that "on" prefix removed)
+dojo.connect(node,"onmouseenter",cb)                    dojo/on,dojo/mouse             on(node,mouse.enter,cb)
+dojo.connect(node,"onmouseleave",cb)                    dojo/on,dojo/mouse             on(node,mouse.leave,cb)
+dojo.connect(node,"onkeypress",cb)                      dojo/on                        on(node,"keypress",cb) for printable or on(node,"keydown",cb) for arrows etc.
+dojo.disconnect(handle)                                                                handle.remove()
 dojo.connectPublisher                                                                  see above
 dojo.fixEvent                                           dojo/_base/event               event.fix
 dojo.stopEvent                                          dojo/_base/event               event.stop
@@ -622,7 +635,7 @@ dojo.create                                             dojo/dom-construct      
 dojo.empty                                              dojo/dom-construct             construct.empty
 dojo.destroy                                            dojo/dom-construct             construct.destroy
 dojo.fieldToObject                                      dojo/dom-form                  form.fieldToObject
-dojo.formToObject                                       dojo/dom-form                  form.formToObject
+dojo.formToObject                                       dojo/dom-form                  form.toObject
 dojo.formToQuery                                        dojo/dom-form                  form.toQuery
 dojo.formToJson                                         dojo/dom-form                  form.toJson
 dojo._getPadExtents                                     dojo/dom-geometry              geometry.getPadExtents

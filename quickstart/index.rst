@@ -12,7 +12,7 @@ Getting started
    :class: logowelcome;
 
 * :ref:`Getting started fast <quickstart/gettingstarted>`
-* :ref:`Hello World tutorial <quickstart/helloworld>`
+* `Hello Dojo Tutorial <http://dojotoolkit.org/documentation/tutorials/1.7/hello_dojo/>`_
 * :ref:`History of Dojo <quickstart/introduction/history>`
 * :ref:`Licensing <quickstart/introduction/licensing>`
 * :ref:`Why Choose Dojo? <quickstart/introduction/whydojo>`

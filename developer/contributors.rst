@@ -54,6 +54,7 @@ Individuals who have signed Dojo CLAs
 * Bevin, Geert
 * Bhatia, Naresh
 * Bing, Dong
+* Bird, Stefan
 * Bittinger, Nathan
 * Bodzak, Lee
 * Bolter, David
@@ -216,6 +217,7 @@ Individuals who have signed Dojo CLAs
 * Hayes, Kyle
 * Hays, Jason Scott
 * Heeringson, Jaanus
+* Heil, Jerome (ID)
 * Heimbuch, Ryan C.
 * Henderson, Cal
 * Hennebrueder, Sebastian
@@ -245,6 +247,7 @@ Individuals who have signed Dojo CLAs
 * Isik, Hakan
 * Issakov, Antony
 * James, Stephen
+* Jekel, Peter
 * Jenkins, Adam
 * Jenkins, Scott
 * Johansson, Fredrik

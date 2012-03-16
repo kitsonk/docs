@@ -33,29 +33,6 @@ General Information
 
   * :ref:`a11y Statement <dijit/a11y/statement>`
 
-Base Utilities
-==============
-
-* :ref:`dijit/_base <dijit/_base/>` **STUB**
-
-  * :ref:`dijit/_base/focus <dijit/_base/focus>` **COPIED**
-
-  * :ref:`dijit/_base/place <dijit/_base/place>` **COPIED**
-
-  * :ref:`dijit/_base/popup <dijit/_base/popup>` **COPIED**
-
-  * :ref:`dijit/_base/typematic <dijit/_base/typematic>` **COPIED**
-
-  * :ref:`dijit/_base/manager <dijit/_base/manager>` **STUB**
-
-  * :ref:`dijit/_base/scroll <dijit/_base/scroll>` **STUB**
-
-  * :ref:`dijit/_base/sniff <dijit/_base/sniff>` **STUB**
-
-  * :ref:`dijit/_base/wai <dijit/_base/wai>` **STUB**
-
-  * :ref:`dijit/_base/window <dijit/_base/window>` **STUB**
-
 Utility Classes
 ===============
 
@@ -92,11 +69,9 @@ Infrastructure Widgets
 
 * :ref:`dijit._BidiSupport <dijit/_BidiSupport>` **STUB**
 
-* :ref:`dijit._Calendar <dijit/_Calendar>` **STUB**
+* :ref:`dijit._Contained <dijit/_Contained>`
 
-* :ref:`dijit._Contained <dijit/_Contained>` **STUB**
-
-* :ref:`dijit._Container <dijit/_Container>` **STUB**
+* :ref:`dijit._Container <dijit/_Container>`
 
 * :ref:`dijit._DialogMixin <dijit/_DialogMixin>` **STUB**
 
