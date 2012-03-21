@@ -328,6 +328,8 @@ dojo.addOnWindowUnload                                  dojo/_base/unload       
 Events
 ------
 
+TODO: update this section with context variable after Kris adds it as a fourth optional parameter
+
 dojo.connect()/dojo.disconnect() for monitoring DOMNode events have been replaced by the on() method returned from the "dojo/on" module.   (For dojo.connect() usage as advice on plain javascript objects, see the "Advice" section below.)
 
 Old code like:
@@ -526,12 +528,12 @@ is changed to
 .. js ::
 
     require(["dojo/aspect"], function(aspect){
-        aspect.after(myInstance, "execute", callback);
+        var handle = aspect.after(myInstance, "execute", callback);
         ...
         handle.remove();
     });
 
-Note that callback() should not return a value, because if it did the returned value would be reported as the value that myInstance.execute() appeared to return, which is not what dojo.connect() did.
+Note that ``callback()`` should not return a value, because if it did the returned value would be reported as the value that ``myInstance.execute()`` appeared to return, which is not what dojo.connect() did.
 
 quick reference
 ~~~~~~~~~~~~~~~
@@ -544,13 +546,15 @@ dojo.disconnect(handle)                                                         
 
 Publish and subscribe
 ---------------------
-dojo.publish()/dojo.subscribe()/dojo.unsubscribe() have been replaced by the dojo/topic module.
+TODO: update this section with context variable after Kris adds it as a fourth optional parameter
+
+``dojo.publish()``/``dojo.subscribe()``/``dojo.unsubscribe()`` have been replaced by the ``dojo/topic`` module.
 
 Old code:
 
 .. js ::
 
-     var handle = dojo.subscribe("some/topic", callback);
+     var handle = dojo.subscribe("some/topic", context, callback);
      ...
      dojo.unsubscribe(handle);
 
@@ -596,21 +600,22 @@ DOM manipulations
 -----------------
 The dojo DOM related functions previously available as part of dojo.js are now in a number of modules which must each be explicitly loaded.    The modules are:
 
-* dom: general functions
-* dojo/dom-attr: setting node attributes
-* dojo/dom-class: adding and removing classes
-* dojo/dom-construct: creating and destroying nodes
-* dojo/dom-form: form related
-* dojo/io-query
-* dom-geometry: node sizing
-* dom-prop: setting node properties
-* dom-style: setting/getting style for a node
+* :ref:`dojo/dom <dojo/dom>`: general functions
+* :ref:`dojo/dom-attr <dojo/dom-attr>`: setting node attributes
+* :ref:`dojo/dom-class <dojo/dom-class>`: adding and removing classes
+* :ref:`dojo/dom-construct <dojo/dom-construct>`: creating and destroying nodes
+* :ref:`dojo/dom-form <dojo/dom-form>`: form related
+* :ref:`dojo/io-query <dojo/io-query>`: query conversion fucntions
+* :ref:`dojo/dom-geometry <dojo/dom-geometry>`: node sizing
+* :ref:`dojo/dom-prop <dojo/dom-prop>`: setting node properties
+* :ref:`dojo/dom-style <dojo/dom-style>`: setting/getting style for a node
 
 
-Note in particular that node attribute setting and property setting has been split up.   You should use dojo-attr to set attributes and dojo-prop to set properties (TODO: list of what are attributes and what are properties)
+Note in particular that node attribute setting and property setting has been split up. ``dojo/dom-attr`` will eventually
+be deprecated in lieu of ``dojo/dom-prop``.
 
-Note also that combination setter/getter functions like dojo.marginBox(), dojo.contentBox(), and dojo.style()
-have been split into separate setters and getter methods.
+Note also that combination accessor functions like ``dojo.marginBox()``, ``dojo.contentBox()``, and
+``dojo.style()`` have been split into separate setter and getter methods.
 
 quick reference
 ~~~~~~~~~~~~~~~
@@ -680,11 +685,10 @@ dojo.withGlobal                                         dojo/_base/window       
 dojo.withDoc                                            dojo/_base/window              window.withDoc
 =====================================================   ============================   ====================================
 
-
 JSON
 ----
 
-The JSON methods are availabe from the dojo/json package, which must be loaded explicitly.
+The JSON methods are available from the ``dojo/json`` package, which must be loaded explicitly.
 
 =====================================================   ============================   ====================================
 1.x syntax                                              2.0 module                     2.0 syntax
@@ -727,7 +731,8 @@ Even if you are parsing declaratively via the parseOnLoad: true dojoConfig setti
 
 data-dojo-type and data-dojo-props
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"dojoType" has been renamed to "data-dojo-type", and a new "data-dojo-props" parameter has been created to specify non-native attributes in a way that doesn't violate HTML5 validation.
+
+``dojoType`` has been renamed to ``data-dojo-type``, and a new ``data-dojo-props`` parameter has been created to specify non-native attributes in a way that doesn't violate HTML5 validation.
 
 Old code:
 
@@ -743,8 +748,28 @@ New code:
      <button data-dojo-type="dijit.form.Button" tabIndex=2
         data-dojo-props="iconClass: 'checkmark'">OK</button>
 
-data-dojo-props is a hash that contains name value pairs, for example: data-dojo-props=" name: 'hi', size: 123".
+``data-dojo-props`` is a hash that contains name value pairs, for example: ``data-dojo-props=" name: 'hi', size: 123"``.
 
+using MIDs
+~~~~~~~~~~
+
+Starting in 1.8, referring to classes by their module ID (MID) is the preferred way.
+
+Old code:
+
+.. html ::
+
+  <button data-dojo-type="dijit.form.Button" tabIndex=2
+    data-dojo-props="iconClass: 'checkmark'">OK</button>
+
+New code:
+
+.. html ::
+
+  <button data-dojo-type="dijit/form/Button" tabIndex=2
+    data-dojo-props="iconClass: 'checkmark'">OK</button>
+
+The MID should match the ``require(...)`` used to require it in and the ``require(...)`` must occur before the parser is invoked, but the parse doesn't have to specifically occur within the closure of the ``require(...)``.
 
 connecting to widget events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -856,8 +881,47 @@ State of 1.8: ComboBox, FilteringSelect, and Tree can accept new store
 
 Declaring classes
 -----------------
-TBD.   dojo.declare() may be replaced by ComposeJS, or may have more modest changes.
+TBD.   ``dojo.declare()`` may be replaced by ComposeJS, or may have more modest changes.  For now, for classes you don't need in the global scope, you should declare them as baseless.  Something like this:
 
+.. js ::
+
+  dojo.provide("package.myClass");
+  dojo.require("dijit._Widget");
+  dojo.declare("package.myWidget", [dijit._Widget], {
+    // myWidget Class declaration
+  });
+
+Should change to something like this:
+
+.. js ::
+
+  define(["dojo/_base/declare", "dijit/_WidgetBase"], 
+  function(declare, _WidgetBase){
+    return declare([_WidgetBase], {
+      // myWidget Class declaration
+    });
+  });
+
+Notice the omission of the first argument in the ``declare()``. This means that nothing will be set in the global scope.
+Also, the mixin array uses the return values of the define requirement array, instead of the legacy class names. This
+means that your custom class will only be available within the closure scope of a ``require()`` that has required it in.
+
+This does mean your module can only return a single public class, which is more consistent with the concepts of AMD and
+baseless anyways, but if you need to create a private class that isn't referenced outside the current module, you can
+simply declare it as a variable. For example:
+
+.. js ::
+
+  define(["dojo/_base/declare", "dijit/_WidgetBase"],
+  function(declare, _WidgetBase){
+    var _myMixin = declare(null, {
+      // _myMixin Class private declaration
+    });
+
+    return declare([_WidgetBase, _myMixin], {
+      // myWidget Class
+    });
+  });
 
 FX
 --
@@ -926,6 +990,7 @@ Dijit
 
 Mapping table for dijit
 -----------------------
+
 This is a quick lookup table for methods, attributes, etc. in 1.x mapped to their equivalent method in that module in 2.0.   Note that many methods that were previously included automatically now need to be explicitly loaded.
 
 The sections underneath this give more detail on conversions.

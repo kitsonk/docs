@@ -197,6 +197,7 @@ Individuals who have signed Dojo CLAs
 * Grandrath, Martin (mg)
 * Green, Amit
 * Greenberg, Jeffrey
+* Grencik, Jozef
 * Grimm, Steven
 * Groth, Ryan
 * Guillen, Revin (revin)
@@ -239,6 +240,7 @@ Individuals who have signed Dojo CLAs
 * Huang, Ming Zhe
 * Humphreys, Martin
 * Hussenet, Claude
+* Illit, Marcel
 * Ionushonis, Victoria
 * Ippolito, Robert
 * Irish, Paul
@@ -635,6 +637,7 @@ Corporations or Organizations with a CCLA on file
 * Core Technology
 * Coyote Point System, Inc.  Sachin Maheshwari, Sergey Katsev
 * Curam Software
+* Curve Dental Limited: Michael Cramm,Michael Talbot,Dale Fukami,Carey Cunningham,Joel Tulloch,Richard Compton,Cong Ma,Steven Hines
 * DFKI GmbH
 * Defence Science &amp; Technology Organisation
 * DoYouSoft
