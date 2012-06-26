@@ -4,6 +4,8 @@
 Contributor Listing
 ===================
 
+Note: The canonical list for users with CLAs is now at http://dojofoundation.org/about/claCheck. This list will be removed at some point in the future.
+
 Individuals who have signed Dojo CLAs
 =====================================
 
@@ -154,7 +156,7 @@ Individuals who have signed Dojo CLAs
 * Ferrari, Alessandro
 * Ferrydiansyah, Reza
 * Field, Terry
-* Firsov, Olekasandr
+* Firsov, Olekasandr (nickname=Sasha, trac=suns)
 * Fitzgerald, Nick
 * Fitzgerald, Patrick
 * Follia, Pierpaolo
@@ -238,6 +240,7 @@ Individuals who have signed Dojo CLAs
 * Horowitz, Richard
 * Hu, Jian
 * Huang, Ming Zhe
+* Hudson, David
 * Humphreys, Martin
 * Hussenet, Claude
 * Illit, Marcel
@@ -281,7 +284,7 @@ Individuals who have signed Dojo CLAs
 * Klubnik, Justin
 * Knapp, Matthew
 * Koberg, Robert S.
-* Kokot, Peter (maastermedia)
+* Kokot, Peter (peterkokot)
 * Kolba, Nicholas
 * Komarneni, Vamsikrishna
 * Koonce, Grayson
@@ -387,6 +390,7 @@ Individuals who have signed Dojo CLAs
 * Neuberg, Bradley Keith
 * Newbill, Christopher
 * Newlau, Andrei
+* Newman, Joshua
 * Nguyen, TA
 * Nguyen, Thanh (Tom)
 * Noheda, Jose
@@ -471,7 +475,7 @@ Individuals who have signed Dojo CLAs
 * Schindler, William F.
 * Schmidt, Andreas
 * Scholz, Kyle
-* Schontzler, David
+* Schontzler, David (david)
 * Schreiber, Maik
 * Schuerig, Michael
 * Schuster, Stefan
@@ -558,6 +562,7 @@ Individuals who have signed Dojo CLAs
 * Tyson, Matt
 * Ukrop, Jakub
 * Ultis, Jonathan
+* Upton, Thomas
 * Uren, Richard
 * Vachou, Travis
 * Valdelievre, Florent
@@ -576,6 +581,7 @@ Individuals who have signed Dojo CLAs
 * Von Klipstein, Tobias
 * Wagener, Peter
 * Waite, Robert
+* Walker, Andrew
 * Walker, Joe
 * Wallez, Sylvain
 * Wang, Pei
@@ -608,6 +614,7 @@ Individuals who have signed Dojo CLAs
 * Yarimagan, Ilgin
 * Yeow, Cheah
 * Young, Matthew
+* Young, Rex
 * Yu, Leon
 * Zamir, Brett
 * Zammetti, Frank
@@ -617,6 +624,7 @@ Individuals who have signed Dojo CLAs
 * Zhang, Stephen
 * Zhang, Xiaoming
 * Zhen, Wang
+* Zhu, Wei
 * Zipkin, Joel
 * Zou, Ran
 * Zyp, Kris
@@ -625,6 +633,7 @@ Corporations or Organizations with a CCLA on file
 =================================================
 
 * ActiveGrid, Inc.
+* Adconion Media, Inc.: Peter Higgins (Only to cover Stacked Charts, Better Tooltip)
 * Adaptive Technology Resource Centre
 * AG Interactive
 * AOL, LLC
@@ -662,7 +671,7 @@ Corporations or Organizations with a CCLA on file
 * Leorent, GmbH: Michael Rasmussen
 * Livando.com
 * LUCIAD NV: Tom Makieu, Thomas Neiaynck
-* Maastermedia
+* Maastermedia: Peter Kokot
 * Media Hive
 * Media Distribution Solutions, LLC: Mike Wilcox
 * Meebo

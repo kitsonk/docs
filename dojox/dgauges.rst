@@ -11,6 +11,8 @@ dojox.dgauges
 
 This page describes how to use and extend the Dojo Gauges Framework.
 
+.. image :: dgauges/all_gauges.png
+
 ============
 Introduction
 ============
@@ -58,9 +60,9 @@ This example shows how to add a gauge to a Dojo application using markup:
 
 .. html ::
 
-    <div data-dojo-type="dojox.dgauges.components.default.CircularLinearGauge"
-					value="20" minimum="-50" maximum="50"
-					style="width:300px; height:300px">
+    <div data-dojo-type="dojox/dgauges/components/default/CircularLinearGauge"
+         value="20" minimum="-50" maximum="50"
+         style="width:300px; height:300px">
     </div>
 	
 
@@ -112,9 +114,9 @@ The framework provides 2 events:
  
 .. js ::
 
- 						var gauge = registry.byId("g1");
-						gauge.on("startEditing", function(event){console.log(event.indicator.value);});
-						gauge.on("endEditing", function(event){console.log(event.indicator.value);});
+  var gauge = registry.byId("g1");
+  gauge.on("startEditing", function(event){console.log(event.indicator.value);});
+  gauge.on("endEditing", function(event){console.log(event.indicator.value);});
 
 
 Scalers
@@ -140,30 +142,28 @@ A scale and its scaler collaborate to handle the ticks. The scale provides a tic
 
 .. js ::
 
-           scale.tickShapeFunc = function(group, scale, tick){
-               return group.createLine({
-                   x1: 0,
-                   y1: 0,
-                   x2: tick.isMinor ? 6 : 10,
-                   y2: 0
-               }).setStroke({
-                   color: "black",
-                   width: 1
-               });
-           };
-
+  scale.tickShapeFunc = function(group, scale, tick){
+    return group.createLine({
+      x1: 0,
+      y1: 0,
+      x2: tick.isMinor ? 6 : 10,
+      y2: 0
+    }).setStroke({
+      color: "black",
+      width: 1
+    });
+  };
 
 
 Ticks labeling is handled in a similar way using the tickLabelFunc method:
 
 .. js ::
 
-    scale.tickLabelFunc = function(tick){
-		  if (!tick.isMinor){
-		    return tick.value + "°";
-              }
-	    };
-
+  scale.tickLabelFunc = function(tick){
+    if (!tick.isMinor){
+      return tick.value + "°";
+    }
+  };
 
 
 Value and Range Indicators
@@ -178,12 +178,12 @@ A value indicator is drawn by its indicatorShapeFunc. The following code show a 
 
 .. js ::
 
-         indicator1.indicatorShapeFunc = function(group, indicator){
-               return group.createPolyline([0, -3, 30, 0, 0, 3, 0, -3]).setStroke({
-                   color: "blue",
-                   width: 0.25
-               }).setFill([100, 100, 255, 1]);
-           }
+  indicator1.indicatorShapeFunc = function(group, indicator){
+    return group.createPolyline([0, -3, 30, 0, 0, 3, 0, -3]).setStroke({
+      color: "blue",
+      width: 0.25
+    }).setFill([100, 100, 255, 1]);
+  }
 
 Note: Due to VML limitations, circular range indicators are displayed quite distorded.
 
@@ -219,26 +219,28 @@ For creating a circular gauges, subclass CircularGauge:
 
 .. js ::
 
-    define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/CircularGauge"], 
-      function(lang, declare, CircularGauge){
-	return declare("MyGauge", CircularGauge, {
-		constructor: function(){
-                  // Add your elements here
-		}
-    })});
+  define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/CircularGauge"], 
+     function(lang, declare, CircularGauge){
+       return declare("MyGauge", CircularGauge, {
+	  constructor: function(){
+            // Add your elements here
+         }
+      });
+  });
 
 For creating a horizontal or vertical gauge, subclass RectangularGauge and set the orientation property:
 
 .. js ::
 
-     define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/RectangularGauge"], 
-       function(lang, declare, RectangularGauge){
-	 return declare("MyGauge", RectangularGauge, {
-		constructor: function(){
-                   this.orientation = "vertical" // or "horizontal" (default)
-                   // Add your elements here
-		}
-    })});
+  define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/RectangularGauge"], 
+    function(lang, declare, RectangularGauge){
+    return declare("MyGauge", RectangularGauge, {
+      constructor: function(){
+        this.orientation = "vertical" // or "horizontal" (default)
+        // Add your elements here
+      }
+    });
+  });
 
 
 Then you define the logic and the visual representation of the gauge in the constructor by adding elements. 
@@ -253,93 +255,93 @@ Example of a custom circular gauge
 
 .. js ::
   
-    define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/CircularGauge", 
-            "dojox/dgauges/LinearScaler", "dojox/dgauges/CircularScale", 
-            "dojox/dgauges/CircularValueIndicator", "dojox/dgauges/CircularRangeIndicator", 
-            "dojox/dgauges/TextIndicator"], 
-    function(lang, declare, CircularGauge, LinearScaler, CircularScale, CircularValueIndicator, 
-              CircularRangeIndicator, TextIndicator){
-    	return declare("dojox.dgauges.tests.gauges.SimpleCircularGauge", CircularGauge, {
-    		constructor: function(){
-    			// Changes the font
-    			this.font = {
-    				family: "Helvetica",
-    				style: "normal",
-    				size: "10pt",
-    				color: "white"
-    			};
-    			
-    			// Draws the background
-    			this.addElement("background", function(g){
-    				g.createEllipse({
-    					cx: 100,
-    					cy: 100,
-    					rx: 100,
-    					ry: 100
-    				}).setFill("#444444");
-    			});
-    			
-    			// The scaler
-    			var scaler = new LinearScaler({
-    				minimum: -100,
-    				maximum: 100,
-    				majorTickInterval: 20,
-    				minorTickInterval: 5
-    			});
-    			
-    			// The scale
-    			var scale = new CircularScale({
-    				scaler: scaler,
-    				originX: 100,
-    				originY: 100,
-    				startAngle: 110,
-    				endAngle: 70,
-    				radius: 75,
-    				labelPosition: "outside",
-    				tickShapeFunc: function(group, scale, tick){
-    					return group.createLine({
-    						x1: tick.isMinor ? 2 : 0,
-    						y1: 0,
-    						x2: tick.isMinor ? 8 : 12,
-    						y2: 0
-    					}).setStroke({
-    						color: tick.isMinor ? "black" : "white",
-    						width: tick.isMinor ? 0.5 : 1
-    					})
-    				}
-    			});
-    			this.addElement("scale", scale);
-    			
-    			// A value indicator
-    			var indicator = new CircularValueIndicator({
-    				interactionArea: "indicator",
-    				indicatorShapeFunc: function(group){
-    					return group.createPolyline([20, -6, 60, 0, 20, 6, 20, -6]).setFill("black").setStroke("white");
-    				},
-    				value: 50
-    			});
-    			scale.addIndicator("indicator", indicator);
-    			
-    			// A green range indicator
-    			var rangeIndicator = new CircularRangeIndicator({
-    				start: 0,
-    				value: 100,
-    				radius: 62,
-    				startThickness:10,
-    				endThickness: 30,
-    				fill: "green",
-    				interactionMode: "none",
-    			});
-    			scale.addIndicator("rangeIndicator", rangeIndicator, true);
-    			
-    			
-    			// Indicator Text"
-    			this.addElement("text", new TextIndicator({
-    				value: "G", x:100, y:100
-    			}));
-    		}	
-    	});
+  define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/CircularGauge",
+        "dojox/dgauges/LinearScaler", "dojox/dgauges/CircularScale",
+        "dojox/dgauges/CircularValueIndicator", "dojox/dgauges/CircularRangeIndicator",
+        "dojox/dgauges/TextIndicator"],
+  function(lang, declare, CircularGauge, LinearScaler, CircularScale, CircularValueIndicator,
+          CircularRangeIndicator, TextIndicator){
+    return declare("dojox.dgauges.tests.gauges.SimpleCircularGauge", CircularGauge, {
+      constructor: function(){
+        // Changes the font
+        this.font = {
+          family: "Helvetica",
+          style: "normal",
+          size: "10pt",
+          color: "white"
+        };
+
+        // Draws the background
+        this.addElement("background", function(g){
+          g.createEllipse({
+            cx: 100,
+            cy: 100,
+            rx: 100,
+            ry: 100
+          }).setFill("#444444");
+        });
+
+        // The scaler
+        var scaler = new LinearScaler({
+          minimum: -100,
+          maximum: 100,
+          majorTickInterval: 20,
+          minorTickInterval: 5
+        });
+
+        // The scale
+        var scale = new CircularScale({
+          scaler: scaler,
+          originX: 100,
+          originY: 100,
+          startAngle: 110,
+          endAngle: 70,
+          radius: 75,
+          labelPosition: "outside",
+          tickShapeFunc: function(group, scale, tick){
+            return group.createLine({
+              x1: tick.isMinor ? 2 : 0,
+              y1: 0,
+              x2: tick.isMinor ? 8 : 12,
+              y2: 0
+            }).setStroke({
+              color: tick.isMinor ? "black" : "white",
+              width: tick.isMinor ? 0.5 : 1
+            })
+          }
+        });
+        this.addElement("scale", scale);
+
+        // A value indicator
+        var indicator = new CircularValueIndicator({
+          interactionArea: "indicator",
+          indicatorShapeFunc: function(group){
+            return group.createPolyline([20, -6, 60, 0, 20, 6, 20, -6]).setFill("black").setStroke("white");
+          },
+          value: 50
+        });
+        scale.addIndicator("indicator", indicator);
+
+        // A green range indicator
+        var rangeIndicator = new CircularRangeIndicator({
+          start: 0,
+          value: 100,
+          radius: 62,
+          startThickness:10,
+          endThickness: 30,
+          fill: "green",
+          interactionMode: "none",
+        });
+        scale.addIndicator("rangeIndicator", rangeIndicator, true);
+
+
+        // Indicator Text"
+        this.addElement("text", new TextIndicator({
+          value: "G", x:100, y:100
+        }));
+      }
     });
+  });
 
 
 Example of a custom horizontal gauge
@@ -347,122 +349,123 @@ Example of a custom horizontal gauge
 
 .. js ::
 
-    define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/RectangularGauge", 
-             "dojox/dgauges/LinearScaler", "dojox/dgauges/RectangularScale", "dojox/dgauges/RectangularValueIndicator", 
-             "dojox/dgauges/RectangularRangeIndicator", "dojox/dgauges/TextIndicator"], 
-            function(lang, declare, RectangularGauge, LinearScaler, RectangularScale, RectangularValueIndicator,
-                     RectangularRangeIndicator, TextIndicator){
-    	return declare("dojox.dgauges.tests.gauges.SimpleRectangularGauge", RectangularGauge, {
-    		constructor: function(){
-    			// Draw background
-    			this.addElement("background", function(g, w){
-    				return g.createRect({
-    					x: 1,
-    					y: 1,
-    					width: w - 2,
-    					height: 50,
-    					r: 3
-    				}).setFill("#CBCBCB").setStroke({
-    					color: "black",
-    					width: 2
-    				});
-    			});
-    			
-    			this.addElement("leadingArea", function(g, w){
-    				return g.createRect({
-    					x: 1,
-    					y: 1,
-    					width: 60,
-    					height: 50,
-    					r: 3
-    				}).setFill("#ABABAB").setStroke({
-    					color: "black",
-    					width: 2
-    				});
-    			}, "leading");
-    			
-    			this.addElement("trailingArea", function(g, w){
-    				// A spacer to take into account the width of the stroke on the right;
-    				g.createLine({
-    					x2: 62
-    				});
-    				return g.createRect({
-    					x: 1,
-    					y: 1,
-    					width: 60,
-    					height: 50,
-    					r: 3
-    				}).setFill("#ABABAB").setStroke({
-    					color: "black",
-    					width: 2
-    				});
-    			}, "trailing");
-    			
-    			// Scale
-    			var scale = new RectangularScale({
-    				scaler: new LinearScaler({
-    					minimum: -100
-    				}),
-    				labelPosition: "trailing",
-    				paddingTop: 15
-    			});
-    			this.addElement("scale", scale);
-    			
-    			// Value indicator
-    			var indicator = new RectangularValueIndicator();
-    			indicator.indicatorShapeFunc = lang.hitch(this, function(group){
-    				group.createPolyline([-5, 0, 5, 0, 0, 10, -5, 0]).setFill("black");
-    				return group;
-    			});
-    			indicator.set("paddingTop", 5);
-    			indicator.set("interactionArea", "gauge");
-    			scale.addIndicator("indicator", indicator);
-    			
-    			// Indicator Text
-    			var trailingText = new TextIndicator({
-    				x: 30,
-    				y: 30,
-    				indicator: indicator,
-    				labelFunc: function(v){
-    					return v + " °C"
-    				}
-    			});
-    			
-    			this.addElement("trailingText", trailingText, "trailing");
-    			var leadingText = new TextIndicator({
-    				x: 30,
-    				y: 30,
-    				indicator: indicator,
-    				labelFunc: function(v){
-    					return ((9 / 5) * v + 32).toFixed() + " °F"
-    				}
-    			});
-    			this.addElement("leadingText", leadingText, "leading");
-    			
-    			scale.addIndicator("gradientIndicator", new RectangularRangeIndicator({
-    				start: -100,
-    				value: 100,
-    				paddingTop: 15,
-    				stroke: null,
-    				fill: {
-    					type: "linear",
-    					x1: 0,
-    					y1: 0,
-    					x2: 1,
-    					y2: 0,
-    					colors: [{
-    						color: "#7FB2F0",
-    						offset: 0
-    					}, {
-    						color: "#FFFFFF",
-    						offset: .5
-    					}, {
-    						color: "#F03221",
-    						offset: 1
-    					}]
-    				}
-    			}), true);
-    			
-    		}
-    	});
+  define(["dojo/_base/lang", "dojo/_base/declare", "dojox/dgauges/RectangularGauge",
+         "dojox/dgauges/LinearScaler", "dojox/dgauges/RectangularScale", "dojox/dgauges/RectangularValueIndicator",
+         "dojox/dgauges/RectangularRangeIndicator", "dojox/dgauges/TextIndicator"],
+        function(lang, declare, RectangularGauge, LinearScaler, RectangularScale, RectangularValueIndicator,
+               RectangularRangeIndicator, TextIndicator){
+    return declare("dojox.dgauges.tests.gauges.SimpleRectangularGauge", RectangularGauge, {
+      constructor: function(){
+        // Draw background
+        this.addElement("background", function(g, w){
+          return g.createRect({
+            x: 1,
+            y: 1,
+            width: w - 2,
+            height: 50,
+            r: 3
+          }).setFill("#CBCBCB").setStroke({
+            color: "black",
+            width: 2
+          });
+        });
+
+        this.addElement("leadingArea", function(g, w){
+          return g.createRect({
+            x: 1,
+            y: 1,
+            width: 60,
+            height: 50,
+            r: 3
+          }).setFill("#ABABAB").setStroke({
+            color: "black",
+            width: 2
+          });
+        }, "leading");
+
+        this.addElement("trailingArea", function(g, w){
+          // A spacer to take into account the width of the stroke on the right;
+          g.createLine({
+            x2: 62
+          });
+          return g.createRect({
+            x: 1,
+            y: 1,
+            width: 60,
+            height: 50,
+            r: 3
+          }).setFill("#ABABAB").setStroke({
+            color: "black",
+            width: 2
+          });
+        }, "trailing");
+
+        // Scale
+        var scale = new RectangularScale({
+          scaler: new LinearScaler({
+            minimum: -100
+          }),
+          labelPosition: "trailing",
+          paddingTop: 15
+        });
+        this.addElement("scale", scale);
+
+        // Value indicator
+        var indicator = new RectangularValueIndicator();
+        indicator.indicatorShapeFunc = lang.hitch(this, function(group){
+          group.createPolyline([-5, 0, 5, 0, 0, 10, -5, 0]).setFill("black");
+          return group;
+        });
+        indicator.set("paddingTop", 5);
+        indicator.set("interactionArea", "gauge");
+        scale.addIndicator("indicator", indicator);
+
+        // Indicator Text
+        var trailingText = new TextIndicator({
+          x: 30,
+          y: 30,
+          indicator: indicator,
+          labelFunc: function(v){
+            return v + " °C"
+          }
+        });
+
+        this.addElement("trailingText", trailingText, "trailing");
+        var leadingText = new TextIndicator({
+          x: 30,
+          y: 30,
+          indicator: indicator,
+          labelFunc: function(v){
+            return ((9 / 5) * v + 32).toFixed() + " °F"
+          }
+        });
+        this.addElement("leadingText", leadingText, "leading");
+
+        scale.addIndicator("gradientIndicator", new RectangularRangeIndicator({
+          start: -100,
+          value: 100,
+          paddingTop: 15,
+          stroke: null,
+          fill: {
+            type: "linear",
+            x1: 0,
+            y1: 0,
+            x2: 1,
+            y2: 0,
+            colors: [{
+              color: "#7FB2F0",
+              offset: 0
+            }, {
+              color: "#FFFFFF",
+              offset: .5
+            }, {
+              color: "#F03221",
+              offset: 1
+            }]
+          }
+        }), true);
+      }
     });
+  });
+
+  

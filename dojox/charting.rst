@@ -160,12 +160,13 @@ Available 2D chart types include:
    * **Pie** - Goes great with punch!
    * **Spider** - A very effective tool for comparing multiple entities based on different characteristics
    * **Scatter** - Similar to MarkerOnly, yet capable to chart using gradient fields.
+   * **Bubble** - Similar to scatter but with bubbles elements which sizes vary depending on the data.
    * **Grid** - For adding a grid layer to your chart.
 
 Lines, Areas and Markers Plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-With any of the lines, areas or markers types you have five specific options. First, there are three options for controlling aspects of **lines**, **areas**, and **markers**. These are often defined by the chosen plot type, but can be changed to get other behaviors. The lines option determines whether or not lines are used to connect data points. If the areas type is selected, the area below the data line will be filled. The markers option will determine if markers are placed at data points.
+With any of the lines, areas or markers types you have five specific options. First, there are three options for controlling aspects of **lines**, **areas**, and **markers**. These are often defined by the chosen plot type, but can be changed to get other behaviors. The lines option determines whether or not lines are used to connect data points. If the areas type is selected, the area below the data line will be filled. The markers option will determine if markers are placed at data points. 
 
 .. js ::
 
@@ -188,6 +189,23 @@ Tension allows you to add some curve to the lines on you plot. By default this o
   });
 
 Finally interpolate let's you choose the behavior when a data point is missing in the chart (i.e. its data value is null). If interpolate is false (default) a the line or area will be cut at that data point and will start back at the next valid data point. If interpolate is true, the missing data point will be interpolated and the chart continuously drawn.
+
+*About markers*
+
+The markers are fixed size symbols retrieved from the chart theme. To change the markers size you need to change the symbols in the theme. For example to double the size of the first symbols:
+
+.. js ::
+
+  require["dojox/charting/Chart", "dojox/charting/SimpleTheme"], function(Chart, SimpleTheme){
+    var myTheme = new SimpleTheme({
+      markers: {
+        CIRCLE: "m-6,0 c0,-8 12,-8 12,0, m-12,0 c0,8 12,8 12,0"
+        SQUARE: "m-6,-6 12,0 0,12 -12,0z"
+      }
+    });
+    var chart = new Chart().setTheme(myTheme);
+  });
+
 
 Bars, Columns, Candle Stick Plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -224,6 +242,25 @@ For any chart type that supports axes, you can also define custom names to your 
     chart.addPlot("default", { type: Bars, hAxis: "cool x", vAxis: "super y" });
   });
 
+
+Bubble Plots
+~~~~~~~~~~~~
+
+Tne bubble plot provides several options including bubble fill, stroke and shadow.
+
+.. js ::
+
+  require(["dojox/charting/plot2d/Bubble", ...], function(Bubble, ...){
+    chart.addPlot("default", { type: Bubble, fill: "red" });
+  });
+
+The important point is that the data series used for the Bubble plot must be of the following form:
+
+[ { x: x0, y: y0, size: size0 }, { x: x1, y: y1, size: size1 }, ... ]
+
+With size corresponding to the size of the bubble for a given data point.
+
+
 Pie Plot
 ~~~~~~~~
 
@@ -246,8 +283,8 @@ Pie charts have a separate list of parameters. Here are the parameters for the p
       radius: 0
   }
 
-Style on Lines, Areas, Bars, Columns and Pie plots
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Style on Lines, Areas, Bars, Columns, Bubble & Pie plots
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 These plots support a common set of style properties that when provided override the style taken from the chart theme. This includes for example **fill** property to specify with fill is used by the plot.
 This includes as well a **shadow** property that allows you to add a shadow effect, and can
@@ -706,36 +743,39 @@ For pie type charts you can specify additional information: the text label for e
       {y: 1, text: "Other", color: "white", fontColor: "red"}
   ]);
 
-Using dojo.data Data Sources with Charts
-----------------------------------------
+Using dojo/store and dojo/data Data Sources with Charts
+-------------------------------------------------------
 
-dojox.charting.DataSeries is used to connect to :ref:`dojo.data <dojo/data>` stores. User should create it and pass it instead of a data array in chart.addSeries() call.
+`dojox/charting/StoreSeries` are specific series to be used to connect a chart to a :ref:`dojo/store <dojo/store>`. Similarly
+`dojox/charting/DataSeries` can be used to connect to the deprecated :ref:`dojo/data <dojo/data>` instances.
 
-DataSeries' constructor has following parameters:
+User should create an instance of these series and pass it instead of a data array to Chart.addSeries() method.
+
+StoreSeries and DataSeries constructor have following parameters:
 
 ====== ========================== ======= ===========
 Name   Type                       Default Description
 ====== ========================== ======= ===========
-store  object                     none    Data store to use. Should implement at least :ref:`dojo.data.api.Read <dojo/data/api/Read>` and :ref:`dojo.data.api.Identity <dojo/data/api/Identity>`. If it implements :ref:`dojo.data.api.Notification <dojo/data/api/Notification>`, it will be used to redraw chart dynamically.
-kwArgs object                     none    Used for fetching items. Will vary depending upon store. See :ref:`dojo.data.api.Read.fetch() <dojo/data/api/Read>` for details.
+store  object                     none    The dojo/store or dojo/data to use. For dojo/data it should implement at least :ref:`dojo.data.api.Read <dojo/data/api/Read>` and :ref:`dojo.data.api.Identity <dojo/data/api/Identity>`. If it implements :ref:`dojo.data.api.Notification <dojo/data/api/Notification>`, it will be used to redraw chart dynamically.
+kwArgs object                     none    Used for fetching items. Will vary depending upon store. See :ref:`dojo/store <dojo/store>` or :ref:`dojo/data/api/Read.fetch() <dojo/data/api/Read>` for details.
 value  object | function | string "value" Function, which takes a store, and an object handle, and produces an output possibly inspecting the store's item. Or a dictionary object, which tells what names to extract from an object and how to map them to an output. Or a field name to be used as a numeric output.
 ====== ========================== ======= ===========
 
-DataSeries doesn't define any user-facing methods.
+Once instantiated the StoreSeries and DataSeries are not supposed to be manipulated by the application developper.
 
 The "value" argument allows to supply complex values for some charts (OHLC, candle stick), and additional values for customization purposes (text labels, tooltips, and so on).
 
-Example of a function that can be used to extract values:
+The following example shows a function that can be used to extract the values:
 
 .. js ::
   
-  function trans1(store, item){
+  function getValueObject(store, item){
     // let's create our object
     var o = {
-      x: store.getValue(item, "order"),
-      y: store.getValue(item, "value"),
-      tooltip: store.getValue(item, "title"),
-      color: store.getValue(item, "urgency") ? "red" : "green"
+      x: item["order"],
+      y: item["value"],
+      tooltip: item["title"],
+      color: item["urgency"] ? "red" : "green"
     };
     // we can massage the object, if we want, and return it
     return o;
@@ -755,11 +795,11 @@ The effect will be the same as the following function was applied to extract val
 
 .. js ::
   
-  function trans2(store, item){
+  function getValueObect(store, item){
     var o = {
-      x: store.getValue(item, "order"),
-      y: store.getValue(item, "value"),
-      tooltip: store.getValue(item, "title")
+      x: item["order"],
+      y: item["value"],
+      tooltip: item["title"]
     };
     return o;
   }
@@ -771,8 +811,8 @@ If a field name is specified, it is used to pull one (numeric) value. The effect
 .. js ::
   
   var field = "abc";
-  function trans3(store, item){
-    return store.getValue(item, field);
+  function getValueObject(store, item){
+    return item[field];
   }
 
 Changing Color Themes
@@ -1015,9 +1055,22 @@ Tooltip supports the following keyword parameters:
 
 The default text function checks if a data point is an object, and uses an optional "Tooltip" member if available — this is a provision for custom Tooltips. Otherwise, it uses a numeric value. Tooltip text can be any valid HTML, so you can specify rich text multi-line Tooltips if desired.
 
-The picture below demonstrates Tooltip, and Highlight actions.
+The picture below demonstrates Tooltip action.
 
-TODO: Example Tooltip and Highlight
+.. js ::
+
+  require(["dojox/charting/Chart", "dojox/charting/plot2d/Default", "dojox/charting/plot2d/Columns",
+    "dojox/charting/action2d/Tooltip"],
+    function(Chart, Default, Columns, Tooltip){
+      var chart = new Chart("test");
+      chart.addAxis("x", {type : Default, enableCache: true});
+      chart.addAxis("y", {vertical: true});
+      chart.addPlot("default", {type: Columns, enableCache: true});
+      chart.addSeries("Series A", [ ... ]);
+      new Tooltip(chart, "default");
+      chart.render()
+  });
+
 
 MouseZoomAndPan
 ---------------
@@ -1235,7 +1288,7 @@ In addition to using the charts programmatically as shown in previous sections, 
 The Chart Widget
 ----------------
 
-One of the easiest ways to use Dojo Charting is is to use the Chart2D widget. The example below is taken from the Dojo Chart2D widget test:
+One of the easiest ways to use Dojo Charting is to use the dojox/charting/widget/Chart widget as shown in the following example:
 
 .. html ::
   

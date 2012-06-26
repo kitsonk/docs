@@ -1,4 +1,4 @@
-.. _dojo/config:
+.. _dojo/_base/config:
 
 ===============================
 dojo.config (dojo/_base/config)
@@ -120,14 +120,13 @@ Debugging settings in dojoConfig
 dojoConfig is a quick and easy way to turn dojo's built-in debugging features on and off. Regardless of whether you are using a custom build, or the uncompressed source, the debugging features will be available for you to turn on whenever necessary. The parameters you'll use are the following:
 
 isDebug: true
-  When set to "true", isDebug will load dojo's extended debugging tools via Firebug, or Firebug Lite. You will have access to a debugging window regardless of what browser you are using. You can run arbitrary code statements from the debugging console, and also view output statements via dojo's built-in `console.* functions <http://api.dojotoolkit.org/jsdoc/dojo/HEAD/console>`_. Default value is "false."
+  When set to "true", isDebug will load dojo's extended debugging tools via Firebug, or Firebug Lite. You will have access to a debugging window regardless of what browser you are using. You can run arbitrary code statements from the debugging console, and also view output statements via dojo's built-in `console.* functions <http://api.dojotoolkit.org/jsdoc/dojo/HEAD/console>`_. When isDebug is "false" (default) some additional debugging information like warning when using deprecated or experimental code are not printed out. Default value is "false".
 
 debugContainerId: "yourContainerId"
   If specified, when the page is rendered dojo will look for an element with the specified id and will put the Firebug Lite console window inside that element. This allows developers extra control over the display of the console window and to easily reference it in their own scripts. By default the div containing the console window does not have an id associated with it.
 
 debugAtAllCosts: true (Dojo < 1.7 only)
   This setting forces the use of the xdomain loader to ensure all loaded modules have their own script tag. This gives you real line numbers in error messages and a complete list of script urls in most debugging tools. There is much more information here on `this tutorial on debugging with dojo <quickstart/debugging>`_. Note, this will break your application, if you pass a variable to dojo.require() instead of a string literal, and if you have code that relies on the synchronous loader i.e. not wrapped in dojo.ready/dojo.ready.
-  
   Version 1.6 has issues with this setting; see http://bugs.dojotoolkit.org/ticket/12608 for more information.  It has been removed in 1.7; see the :ref:`release notes <releasenotes/1.7>`.
 
 Language and Localization Settings in dojoConfig
@@ -140,7 +139,6 @@ locale: "en-us"
 
 extraLocale: ["ja-jp"]
   In addition to the locale, developers can specify that extra locale files also be downloaded in parallel.  The argument to the extraLocale parameter is an array of strings representing locales.
-
   The extraLocale is used only for edge cases like multi-lingual pages or for dynamically switching languages. It is generally more efficient and preferred to switch languages by reloading the page and changing the locale setting.  An example use case for extraLocale would be a language tutorial – a page in the user's native language that teaches Japanese.
 
 Finding Resources in Non-Standard Locations
@@ -152,7 +150,7 @@ baseUrl: "/assets/mydojo/"
   When using multiple versions of dojo in parallel in a given site, or if the core dojo.js file has been renamed when creating a custom build, the baseUrl parameter should be used to indicate where the dojo core is located. This may also be necessary for sites that use the <base> tag which can confuse some browsers (e.g. IE6). The value for baseUrl should be the directory that contains the dojo.js file. The value should always be defined with an ending slash (/) character.
 
 paths: {"foo": "../../bar"}
-  Using this parameter is equivalent of calling require({ paths:{ "foo": "../../bar" }}) and allows dojo to locate custom modules. See :ref:`AMD loader <loader/amd>`.
+  Using this parameter is equivalent of calling require({ paths:{ "foo": "../../bar" }}) and allows dojo to locate custom modules. See more details on this and other loader related configurations in :ref:`AMD loader identifiers <loader/amd#module-identifiers>` and :ref:`AMD loader configuration <loader/amd#configuration>`
 
 Other Options
 -------------
@@ -169,6 +167,39 @@ afterOnLoad: true
             d.type = "text/javascript";
         }
 
+addOnLoad: Function or Array
+	Adds a callback via dojo.ready(). Useful when Dojo is added after
+	the page loads and djConfig.afterOnLoad is true. Supports the same
+	arguments as dojo.addOnLoad. When using a function reference, use
+	`djConfig.addOnLoad = function(){};`. For object with function name use
+	`djConfig.addOnLoad = [myObject, "functionName"];` and for object with
+	function reference use `djConfig.addOnLoad = [myObject, function(){}];`
+
+require: Array
+	An array of module names to be loaded immediately after dojo.js has been included
+	in a page.
+
+dojoBlankHtmlUrl: "dojo/resources/blank.html"
+	Used by some modules to configure an empty iframe. Used by dojo.io.iframe and
+	dojo.back, and dijit popup support in IE where an iframe is needed to make sure native
+	controls do not bleed through the popups. Normally this configuration variable
+	does not need to be set, except when using cross-domain/CDN Dojo builds.
+	Save dojo/resources/blank.html to your domain and set `djConfig.dojoBlankHtmlUrl`
+	to the path on your domain your copy of blank.html.
+
+ioPublish:false
+	Set this to true to enable publishing of topics for the different phases of
+	IO operations. Publishing is done via dojo.publish. See dojo.__IoPublish for a list
+	of topics that are published.
+
+useCustomLogger: Anything?
+	If set to a value that evaluates to true such as a string or array and
+	isDebug is true and Firebug is not available or running, then it bypasses
+	the creation of Firebug Lite allowing you to define your own console object.
+
+transparentColor: [255,255,255]
+	Array containing the r, g, b components used as transparent color in dojo.Color;
+	if undefined, [255,255,255] (white) will be used.
 
 skipIeDomLoaded: false
   For IE only, skip the DOMContentLoaded hack used. Sometimes it can cause an Operation Aborted error if the rest of the page triggers script defers before the DOM is ready. If this is config value is set to true, then dojo.ready callbacks will not be triggered until the page load event, which is after images and iframes load. If you want to trigger the callbacks sooner, you can put a script block in the bottom of your HTML that calls dojo._loadInit();. If you are using multiversion support, change "dojo." to the appropriate scope name for dojo.

@@ -11,6 +11,9 @@ dojox.mobile.RoundRectCategory
 .. contents ::
     :depth: 2
 
+Introduction
+============
+
 RoundRectCategory is a category header for a rounded rectangle list.
 
 .. image :: RoundRectCategory.png
@@ -21,7 +24,7 @@ Constructor Parameters
 +--------------+----------+---------+-----------------------------------------------------------------------------------------------------------+
 |Parameter     |Type      |Default  |Description                                                                                                |
 +--------------+----------+---------+-----------------------------------------------------------------------------------------------------------+
-|label         |Boolean   |""       |A label of the category. If the label is not specified, innerHTML is used as a label.                      |
+|label         |String    |""       |A label of the category. If the label is not specified, innerHTML is used as a label.                      |
 +--------------+----------+---------+-----------------------------------------------------------------------------------------------------------+
 
 Examples
@@ -29,6 +32,13 @@ Examples
 
 Declarative example
 -------------------
+
+.. js ::
+
+  require([
+    "dojox/mobile",
+    "dojox/mobile/parser"
+  ]);
 
 .. html ::
 

@@ -39,7 +39,10 @@ The basic usage looks like:
     on(document, "click", clickHandler);
   });
 
-The return value from the on function is a signal handler that has a remove() method that can be used to stop listening for the events. For example, to listen for a single click, one could do:
+Removing an event handler
+-------------------------
+
+Dojo provides a way to remove an event handler. The return value of `on` is a simple object with a `remove` method, which will remove the event listener when called. For example, to listen for a single click, one could do:
 
 .. js ::
 
@@ -125,7 +128,7 @@ Extension Events
 
 The eventType parameter may also be an extension event.
 An extension event is a custom event that may be based on extended functionality.
-Dojo includes several extension events, including touch gestures available in dojo/gestures and mouse tracking functionality with dojo/mouse's enter and leave extension events.
+Dojo includes several extension events, such as mouse tracking functionality with dojo/mouse's enter and leave extension events.
 For example, to listen for the mouse hovering over a DOM node, we could write:
 
 .. js ::
@@ -234,7 +237,7 @@ Using event delegation on a html table to highlight rows and columns.
       'dojo/dom-class',
       'dojo/dom-attr',
       'dojo/query'  // note that dojo/query must be loaded for event delegation to work
-    ], function(on, domClass, domAttr) {
+    ], function(on, domClass, domAttr, query) {
   
       var highlighter = {
   

@@ -20,7 +20,8 @@ Grids are familiar in the client/server development world. Basically a grid is a
 
 
 .. code-example ::
- 
+  :djConfig: async: true, parseOnLoad: false
+
   .. js ::
 
         require(['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dojo/dom', 'dojo/domReady!'],
@@ -71,7 +72,7 @@ Grids are familiar in the client/server development world. Basically a grid is a
 
   .. css ::
 
-        @import "{{baseUrl}}dojox/grid/resources/{{theme}}Grid.css";
+        @import "{{baseUrl}}dojox/grid/resources/claroGrid.css";
 
         /*Grid needs an explicit height by default*/
         #grid {
@@ -124,6 +125,8 @@ editable
   A boolean value that declares whether or not the cell is editable
 ``New in 1.4`` draggable
   A boolean value that you can set to false if you want a cell not to be draggable but others to be draggable
+sortDesc
+  A boolean value setting the default initial sort direction for a cell. When no sort action has been taken on a cell this value determines which direction (true = descending, false/default = ascending) to sort the columm upon first clicking the header. Subsequent clicks simply toggle the existing direction.
 formatter
   A JavaScript function that is called which returns the value to be shown in the cell.  The value from the data store is passed as a parameter to the function.  The returned value that is inserted into the page can be any legal HTML.  In dojo 1.3 and earlier, it should *not* be a dijit Widget as that is not parsed.  ``New in 1.4`` You can return a dijit Widget and it will be placed in that location in the cell.  ``New in 1.4`` You can also return a dojo.Deferred and can then pass the deferred's callback function a string to insert at a later point in time.
 
@@ -226,6 +229,8 @@ loadingMessage
   The message to show while the content of the grid is loading.
 errorMessage
   The message to show if an error has occurred loading the data.
+sortInfo
+  Set an initial sort start for the grid, based on the cell. Eg: sortInfo: 1 would sort cell 1 (1-based index) descending, -3 would sort cell 3 ascending. 
 ``New in 1.3`` selectable
   Set to true if you want to enable text selection on your grid.
 ``New in 1.4`` formatterScope
@@ -240,6 +245,7 @@ errorMessage
 .. js ::
   
   <table data-dojo-type="dojox.grid.DataGrid" data-dojo-props="escapeHTMLInData:false" ...>
+
 
 Editing cells
 -------------
@@ -325,7 +331,7 @@ Some style sheets supplied with the Dojo distribution are required:
 .. css ::
   
     @import "/dojox/grid/resources/Grid.css";
-    @import "/dojox/grid/resources/{{theme}}Grid.css";
+    @import "/dojox/grid/resources/claroGrid.css";
 
     .dojoxGrid table {
       margin: 0;
@@ -404,7 +410,8 @@ This example shows how to create a simple Grid programmatically.
 
 
 .. code-example ::
- 
+   :djConfig: async: true, parseOnLoad: false
+
   .. js ::
 
       require(['dojo/_base/lang', 'dojox/grid/DataGrid' , 'dojo/data/ItemFileWriteStore' , 'dojo/dom' , 'dojo/domReady!'],
@@ -453,7 +460,7 @@ This example shows how to create a simple Grid programmatically.
 
   .. css ::
 
-        @import "{{baseUrl}}dojox/grid/resources/{{theme}}Grid.css";
+        @import "{{baseUrl}}dojox/grid/resources/claroGrid.css";
 
         /*Grid needs an explicit height by default*/
         #grid {
@@ -471,7 +478,8 @@ To get the current selected rows of the grid, you can use the method yourGrid.se
 
 
 .. code-example ::
- 
+   :djConfig: async: true, parseOnLoad: true
+
   .. js ::
 
        require(['dojo/_base/array', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/on', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dijit/form/Button', 'dojo/dom', 'dojo/parser', 'dojo/domReady!'],
@@ -555,14 +563,14 @@ To get the current selected rows of the grid, you can use the method yourGrid.se
        <div id="gridDiv"></div>
 
        <p>
-            <span data-dojo-id="button1" data-dojo-type="dijit.form.Button">
+            <span data-dojo-id="button1">
                 get all Selected Items
             </span>
         </p>
 
   .. css ::
 
-        @import "{{baseUrl}}dojox/grid/resources/{{theme}}Grid.css";
+        @import "{{baseUrl}}dojox/grid/resources/claroGrid.css";
 
         /*Grid needs an explicit height by default*/
         #grid {
@@ -594,7 +602,8 @@ First, you have to set a editor for each cell, you would like to edit:
 
 
 .. code-example ::
- 
+  :djConfig: async: true, parseOnLoad: false
+
   .. js ::
 
        require(['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dojox/grid/cells/dijit', 'dojo/dom', 'dojo/domReady!'],
@@ -648,7 +657,7 @@ First, you have to set a editor for each cell, you would like to edit:
 
   .. css ::
 
-        @import "{{baseUrl}}dojox/grid/resources/{{theme}}Grid.css";
+        @import "{{baseUrl}}dojox/grid/resources/claroGrid.css";
 
         /*Grid needs an explicit height by default*/
         #grid {
@@ -665,7 +674,8 @@ Since DataGrid is "DataStoreAware", changes made to the store will be reflected 
 
 
 .. code-example ::
- 
+  :djConfig: async: true, parseOnLoad: false
+
   .. js ::
 
        require(['dojo/_base/array', 'dojo/_base/lang', 'dojo/_base/event', 'dojo/on', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dijit/form/Button', 'dojo/dom', 'dojo/parser', 'dojo/domReady!'],
@@ -747,18 +757,18 @@ Since DataGrid is "DataStoreAware", changes made to the store will be reflected 
     <div id='gridDiv'></div>
 
     <p>
-      <span data-dojo-id='button2' data-dojo-type='dijit.form.Button'>
+      <span data-dojo-id='button2'>
           Add Row
       </span>
     
-      <span data-dojo-id='button1' data-dojo-type='dijit.form.Button'>
+      <span data-dojo-id='button1'>
           Remove Selected Rows
       </span>
     </p>
 
   .. css ::
 
-        @import '{{baseUrl}}dojox/grid/resources/{{theme}}Grid.css';
+        @import '{{baseUrl}}dojox/grid/resources/claroGrid.css';
 
         /*Grid needs an explicit height by default*/
         #grid {
@@ -773,11 +783,12 @@ The Grid offers a filter() method, to filter data from the current query (client
 
 
 .. code-example ::
- 
+  :djConfig: async: true, parseOnLoad: false
+
   .. js ::
 
-       require(['dojo/_base/lang', 'dojo/on', 'dojo/parser', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dijit/form/Button', 'dojo/dom', 'dojo/domReady!'],
-        function(lang, on, parser, DataGrid, ItemFileWriteStore, Button, dom){
+       require(['dojo/_base/lang', 'dojo/on', 'dojo/parser', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dojo/dom', 'dojo/domReady!'],
+        function(lang, on, parser, DataGrid, ItemFileWriteStore, dom){
           parser.parse();
           /*set up data store*/
           var data = {
@@ -843,18 +854,18 @@ The Grid offers a filter() method, to filter data from the current query (client
     <div id="gridDiv"></div>
 
     <p>
-    <span data-dojo-id='button1' data-dojo-type="dijit.form.Button">
+    <span data-dojo-id='button1'>
         Filter
     </span>
 
-    <span data-dojo-id='button2' data-dojo-type="dijit.form.Button">
+    <span data-dojo-id='button2'>
         Show all
     </span>
     </p>
 
   .. css ::
 
-        @import "{{baseUrl}}dojox/grid/resources/{{theme}}Grid.css";
+        @import "{{baseUrl}}dojox/grid/resources/claroGrid.css";
 
         /*Grid needs an explicit height by default*/
         #grid {
@@ -871,7 +882,8 @@ To use it, you just have to override default behavior by yours.
 
 
 .. code-example ::
- 
+  :djConfig: async: true, parseOnLoad: false
+
   .. js ::
 
         require(['dojo/_base/lang', 'dojox/grid/DataGrid', 'dojo/data/ItemFileWriteStore', 'dojo/dom', 'dojo/domReady!'],
@@ -939,7 +951,7 @@ To use it, you just have to override default behavior by yours.
 
   .. css ::
 
-        @import "{{baseUrl}}dojox/grid/resources/{{theme}}Grid.css";
+        @import "{{baseUrl}}dojox/grid/resources/claroGrid.css";
 
         /*Grid needs an explicit height by default*/
         #grid {
@@ -957,6 +969,7 @@ Showing localized datetime data in grid is a very common requirement. Here's an 
 .. code-example ::
   :width: 400
   :height: 300
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -1005,8 +1018,8 @@ Showing localized datetime data in grid is a very common requirement. Here's an 
   .. css ::
 
     @import "{{baseUrl}}/dojo/resources/dojo.css";
-    @import "{{baseUrl}}/dijit/themes/{{theme}}/{{theme}}.css";
-    @import "{{baseUrl}}/dojox/grid/resources/{{theme}}Grid.css";
+    @import "{{baseUrl}}/dijit/themes/claro/claro.css";
+    @import "{{baseUrl}}/dojox/grid/resources/claroGrid.css";
 
 
 
@@ -1020,6 +1033,7 @@ Note: In editing mode, the text box will show the data in store, which is ISO fo
 .. code-example ::
   :width: 400
   :height: 300
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -1066,8 +1080,8 @@ Note: In editing mode, the text box will show the data in store, which is ISO fo
   .. css ::
 
     @import "{{baseUrl}}/dojo/resources/dojo.css";
-    @import "{{baseUrl}}/dijit/themes/{{theme}}/{{theme}}.css";
-    @import "{{baseUrl}}/dojox/grid/resources/{{theme}}Grid.css";
+    @import "{{baseUrl}}/dijit/themes/claro/claro.css";
+    @import "{{baseUrl}}/dojox/grid/resources/claroGrid.css";
 
 
 
@@ -1078,9 +1092,9 @@ Using dijit.form.DateTextBox in editing mode will provide an improved user exper
 
 
 .. code-example::
-  :toolbar: themes, versions, dir
   :width: 400
   :height: 300
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -1135,8 +1149,8 @@ Using dijit.form.DateTextBox in editing mode will provide an improved user exper
   .. css ::
 
     @import "{{baseUrl}}/dojo/resources/dojo.css";
-    @import "{{baseUrl}}/dijit/themes/{{theme}}/{{theme}}.css";
-    @import "{{baseUrl}}/dojox/grid/resources/{{theme}}Grid.css";
+    @import "{{baseUrl}}/dijit/themes/claro/claro.css";
+    @import "{{baseUrl}}/dojox/grid/resources/claroGrid.css";
 
 
 
@@ -1147,9 +1161,9 @@ Although ISO dates are recommended as a convenient and culturally neutral data f
 
 
 .. code-example::
-  :toolbar: themes, versions, dir
   :width: 400
   :height: 300
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -1208,8 +1222,8 @@ Although ISO dates are recommended as a convenient and culturally neutral data f
   .. css ::
 
     @import "{{baseUrl}}/dojo/resources/dojo.css";
-    @import "{{baseUrl}}/dijit/themes/{{theme}}/{{theme}}.css";
-    @import "{{baseUrl}}/dojox/grid/resources/{{theme}}Grid.css";
+    @import "{{baseUrl}}/dijit/themes/claro/claro.css";
+    @import "{{baseUrl}}/dojox/grid/resources/claroGrid.css";
 
 
 _`Inserting a dijit widget (Button) in a field`
@@ -1218,6 +1232,7 @@ _`Inserting a dijit widget (Button) in a field`
 .. code-example ::
   :width: 400
   :height: 300
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -1278,8 +1293,8 @@ _`Inserting a dijit widget (Button) in a field`
   .. css ::
 
     @import "{{baseUrl}}/dojo/resources/dojo.css";
-    @import "{{baseUrl}}/dijit/themes/{{theme}}/{{theme}}.css";
-    @import "{{baseUrl}}/dojox/grid/resources/{{theme}}Grid.css";
+    @import "{{baseUrl}}/dijit/themes/claro/claro.css";
+    @import "{{baseUrl}}/dojox/grid/resources/claroGrid.css";
 
 
 
@@ -1341,7 +1356,7 @@ Keeping row selection across various actions e.g. sorting, filtering is a known 
 
 However, in Dojo 1.7, a new attribute named 'keepSelection' is added trying to make it work under some scenario, the 'keepSelection' attr can be applied to any Grid types including DataGrid, EnhancedGrid, TreeGrid or LazyTreeGrid e.g
 
-.. html ::
+.. js ::
   
   require(['dojox/grid/DataGrid', 'dojox/grid/EnhancedGrid', 'dojox/grid/TreeGrid', 'dojox/grid/LazyTreeGrid', 'dojo/domReady!'],
     function(DataGrid, EnhancedGrid, TreeGrid, LazyTreeGrid) {
@@ -1361,6 +1376,36 @@ But please note:
 1. Key precondition - Store Identifier(id) is required since id is the only way to differentiate datastore items.
 
 2. Known issue - it might not be accurate if some unloaded rows are selected by range(e.g.SHIFT + click)
+
+
+Display grid from a hidden container
+------------------------------------
+
+There are some occasions when grid is created within a hidden container e.g. Dialogue or TabContainer, an explicit resize() would be needed to let grid calculate its size appropriately
+
+.. js ::
+  
+  grid.resize();
+
+
+Add summary attribute
+---------------------
+
+Adding a summary attribute to grid is feasible in Dojo 1.8+
+
+.. js ::
+
+  var grid = new DataGrid({
+      store: store,
+      structure: layout，
+      summary: "A customized grid summary"
+  });
+
+or
+
+.. html ::
+
+  <div data-dojo-type="dojox.grid.DataGrid" data-dojo-props="summary: 'A customized grid summary'"></div>
 
 
 
@@ -1432,4 +1477,3 @@ See also
 * `Dojo Grids: Diving Deeper <http://www.sitepen.com/blog/2007/11/13/dojo-grids-diving-deeper/>`_
 * `Simple Dojo Grids <http://www.sitepen.com/blog/2007/11/06/simple-dojo-grids/>`_
 * `Dojo Grid Widget Updated. Data Integration and Editing Improvements. <http://ajaxian.com/archives/dojo-grid-widget-updated-data-integration-and-editing-improvements>`_
-

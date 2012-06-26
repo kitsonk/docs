@@ -29,7 +29,7 @@ Simply pass _something_ to clone(), and a new version of that _something_ will b
     var newarray = lang.clone(["a", "b", "c"]);
   });
 
-Often times, you want to clone a DOM Node. The easiest way to locate a DOM Node is :ref:`byId <dom.byId>`, though consideration to change the id after cloning is required (id's are unique, and should be used as such)
+Often times, you want to clone a DOM Node. The easiest way to locate a DOM Node is :ref:`dojo/dom::byId <dojo/dom#byId>`, though consideration to change the id after cloning is required (id's are unique, and should be used as such)
 
 .. js ::
   
@@ -39,7 +39,7 @@ Often times, you want to clone a DOM Node. The easiest way to locate a DOM Node 
     attr.set(newnode, "id", "someNewId");
   });
 
-If you have a pointer to some node already, or want to avoid id's all together, :ref:`query() <query()>` may be useful:
+If you have a pointer to some node already, or want to avoid id's all together, :ref:`dojo/query() <dojo/query>` may be useful:
 
 .. js ::
   
@@ -56,9 +56,9 @@ If you have a pointer to some node already, or want to avoid id's all together, 
 
 clone() is always "deep". Cyclic (e.g., circular or DAG) cases are explicitly not supported due to speed and space concerns.
 
-    * If you want a shallow copy of an object y = mixin()({}, x);
-    * If you want a shallow copy of an array: y = map()(x, "return value;");
-    * The rest will be covered by the deep copy: y = clone()(x);
+    * If you want a shallow copy of an object y = lang.mixin({}, x);
+    * If you want a shallow copy of an array: y = arrayUtil.map(x, "return value;");
+    * The rest will be covered by the deep copy: y = lang.clone(x);
 
 TODOC: clone + events?
 
@@ -223,7 +223,7 @@ getObject() also takes an optional boolean parameter which, if `true`, will crea
         */
      });
 
-You can also pass an object as the third parameter. This will define the context in which to search for the property. By default, the context is :ref:`global() <global()>`.
+You can also pass an object as the third parameter. This will define the context in which to search for the property. By default, the context is :ref:`dojo/_base/kernel::global <dojo/_base/kernel#global>`.
 
 .. js ::
  
@@ -240,7 +240,7 @@ You can also pass an object as the third parameter. This will define the context
 
 hitch()
 =======
-hitch() is a neat function. It returns a function that will execute a given function in a given scope.  This function allows you to control how a function executes, particularly in asynchronous operations.  How many times have you done something like:
+hitch() is a neat function. It returns a function that will execute a given function in a given context.  This function allows you to control how a function executes, particularly in asynchronous operations.  How many times have you done something like:
 
 .. js ::
 
@@ -254,7 +254,7 @@ hitch() is a neat function. It returns a function that will execute a given func
 
 
 Only to have it fail with a cryptic error like:
-dataLoaded is not a function, or errors about unresolved variables?   Why does that occur?  Well, because in asynchronous callbacks such as above, you're changing the scope of 'dataLoaded' when you assign it into an associative map.  It will no longer refer to the widget that originally provided it, but its scope will now refer to the enclosing object, the xhr arguments!  To get around this, you can use hitch to force the function to retain its original scope.  The same code done properly will look like:
+dataLoaded is not a function, or errors about unresolved variables?   Why does that occur?  Well, because in asynchronous callbacks such as above, you're changing the context of 'dataLoaded' when you assign it into an associative map.  It will no longer refer to the widget that originally provided it, but its context will now refer to the enclosing object, the xhr arguments!  To get around this, you can use hitch to force the function to retain its original context.  The same code done properly will look like:
 
 .. js ::
 
@@ -266,7 +266,7 @@ dataLoaded is not a function, or errors about unresolved variables?   Why does t
     xhr.get(args);
   });
 
-And now when the xhr.get call runs the load function, it will run in the appropriate widget scope.
+And now when the xhr.get call runs the load function, it will run in the appropriate widget context.
 
 
 
@@ -291,10 +291,10 @@ Let's look at a quick example:
 
 When we open up firebug, we should get "bar" printed. That's because the scope we provided in hitch() was 'myObj', so inside the function, 'this' refers to 'myObj'.
 
-Using Methods in the Scope
---------------------------
+Using Methods in the Context
+----------------------------
 
-Let's say I want to call a method in a given scope. If there's a method that you want to use that's already in the scope, you can just provide the method's name as the second argument:
+Let's say I want to call a method in a given context. If there's a method that you want to use that's already in the scope, you can just provide the method's name as the second argument:
 
 .. code-example::
 
@@ -377,7 +377,7 @@ The above example won't work. If we want to access this.foo, we need to have 'me
 
 mixin()
 =======
-mixin() is a simple utility function for mixing objects together. Mixin combines two objects from right to left, overwriting the left-most object, and returning the newly mixed object for use. mixin() is very similar to :ref:`extend() <extend()>` but only works on objects, whereas extend explicitly extends an object.prototype. Merging two objects
+mixin() is a simple utility function for mixing objects together. Mixin combines two objects from right to left, overwriting the left-most object, and returning the newly mixed object for use. mixin() is very similar to ``extend()`` but only works on objects, whereas extend explicitly extends an object.prototype. Merging two objects
 
 
 Simple Mixes
@@ -417,7 +417,7 @@ Mixin modifies the first object in the list, mixing in second object. If you wis
     var newObject = lang.mixin(lang.clone(a), b);
   });
 
-Here, the return from :ref:`clone() <clone()>` is a new object, then b is mixed in.
+Here, the return from ``clone()`` is a new object, then b is mixed in.
 
 Alternately, you can pass an empty object as the first mix, and mix another object into it. You can then repeat this pattern as often as you'd like:
 
@@ -472,7 +472,7 @@ Now, that instance of the ContentPane as a Date object attached in the _timeCrea
 Mixing methods
 --------------
 
-If you want to mix in some methods into an instance using two previous techniques, be aware that :ref:`declare() <declare()>` decorates them, while ``mixin()`` does not, which may affect how ``this.inherited()`` works, if used in mixed-in methods. Use :ref:`safeMixin() <safeMixin()>`, which correctly handles all properties in ``declare()``-compatible way.
+If you want to mix in some methods into an instance using two previous techniques, be aware that :ref:`dojo/_base/declare() <dojo/_base/declare>` decorates them, while ``mixin()`` does not, which may affect how ``this.inherited()`` works, if used in mixed-in methods. Use ``safeMixin()``, which correctly handles all properties in ``declare()``-compatible way.
 
 partial()
 =========
@@ -514,6 +514,7 @@ Example
 -------
 
 .. code-example ::
+  :djConfig: async: true, parseOnLoad: false
 
   Let's look at a quick running example:
 
@@ -553,7 +554,7 @@ If the second argument is an object, all names within braces are interpreted as 
 
 
 .. code-example::
-  :djConfig: parseOnLoad: false
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -583,7 +584,7 @@ With array
 In most cases you may prefer an array notation effectively simulating the venerable ``printf``:
 
 .. code-example::
-  :djConfig: parseOnLoad: false
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -618,7 +619,7 @@ Let's take a look at example where we are calculating values lazily on demand fr
 This code in action:
 
 .. code-example::
-  :djConfig: parseOnLoad: false
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -659,7 +660,7 @@ With custom pattern
 In some cases you may want to use different braces, e.g., because your interpolated strings contain patterns similar to ``{abc}``, but they should not be evaluated and replaced, or your server-side framework already uses these patterns for something else. In this case you should replace the pattern:
 
 .. code-example::
-  :djConfig: parseOnLoad: false
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -694,7 +695,7 @@ We will borrow Dijit syntax: all names starting with ``!`` are going to be place
 while everything else is going to be filtered.
 
 .. code-example::
-  :djConfig: parseOnLoad: false
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -712,10 +713,10 @@ while everything else is going to be filtered.
 			}
 			// escape
 			return fn(_, name).
-			  replace(/&/g, "&amp;").
-			  replace(/</g, "&lt;").
-			  replace(/>/g, "&gt;").
-			  replace(/"/g, "&quot;");
+			  replace(/&/g, "&").
+			  replace(/</g, "<").
+			  replace(/>/g, ">").
+			  replace(/"/g, """);
 		  });
 		}
 
@@ -743,7 +744,7 @@ Let's add a simple formatting to substituted fields. We will use the following n
 In this example we are going to format numbers as fixed or exponential with optional precision.
 
 .. code-example::
-  :djConfig: parseOnLoad: false
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 
@@ -841,7 +842,7 @@ Usage
 trim() accepts the only argument: a string to be trimmed.
 
 .. code-example::
-  :djConfig: parseOnLoad: false
+  :djConfig: async: true, parseOnLoad: false
 
   .. js ::
 

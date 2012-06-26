@@ -1,4 +1,4 @@
-.. _releasenotes/migration20:
+.. _releasenotes/migration-2.0:
 
 ===============================
 Dojo 1.x to 2.0 migration guide
@@ -873,7 +873,7 @@ Points of caution:
   });
 
 
-2. query() can execute various selector engines.   By default it uses a light engine.   If you have complicated queries you need to switch it to use a more powerful engine.   See :ref:`<dojo/query>` for details
+2. query() can execute various selector engines.   By default it uses a light engine.   If you have complicated queries you need to switch it to use a more powerful engine.   See :ref:`dojo/query <dojo/query>` for details
 
 There are a couple of ways to set the selector engine. First, we can define the selector engine as part of the dojo configuration for the whole page:
 
@@ -1042,6 +1042,11 @@ dijit.byId                                              dijit/registry          
 dijit.byNode                                            dijit/registry                 registry.byNode
 dijit.registry.toArray                                  dijit/registry                 registry.toArray
 dijit.registry.forEach()                                dijit/registry                 array.forEach(registry.toArray(), ...)
+dijit.registry.filter()                                 dijit/registry                 array.filter(registry.toArray(), ...)
+dijit.registry.map()                                    dijit/registry                 array.map(registry.toArray(), ...)
+dijit.registry.every()                                  dijit/registry                 array.every(registry.toArray(), ...)
+dijit.registry.some()                                   dijit/registry                 array.some(registry.toArray(), ...)
+dijit.registry.byClass("dijit.form.Button")             dijit/registry                 array.filter(registry.toArray(), function(widget){ return widget.constructor === require("dijit/form/Button"); })
 dijit.findWidgets                                       dijit/registry                 registry.findWidgets
 dijit.getEnclosingWidget                                dijit/registry                 registry.getEnclosingWidget
 dijit.focus                                             dijit/focus                    focus.focus

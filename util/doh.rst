@@ -40,7 +40,7 @@ and runs in many environments from browsers to JS runtime environments such as R
 
 It's main purpose is a framework for developers (both dojo committers and others),
 to unit test out JavaScript functions and custom widgets.
-Its goal isn't soo much as a way to test a full-blown web application as it is to test the parts
+Its goal isn't so much as a way to test a full-blown web application as it is to test the parts
 that make up the applications in a cross-browser (and even non-browser), compatible manner.
 By having a good set of unit tests, developers can feel confident that code changes they later make
 do not cause regressions in existing functions.
@@ -50,9 +50,9 @@ For a quick list of the features of D.O.H. see below:
 
 * Support for many browsers:
 
- * Firefox 2, 3, 3.5, 3.6 and 4
- * Safari 3.x, 4.x and 5.x
- * Internet Explorer 6, 7, 8 and 9
+ * Firefox 3.6+
+ * Safari 4.x+
+ * Internet Explorer 6+
  * Google Chrome All versions
  * Opera 9.x and 10.x
  * <and others!>
@@ -105,7 +105,9 @@ Okay, so starting up D.O.H. is as simple as running runner.html ...
 but now you may be asking how do I load *my* tests?
 Simple!  You pass it as a query parameter to the runner.html.
 For example, say you just want to run the dojo.date tests, you would load the following in your browser:
-*util/doh/runner.html?testModule=dojo.tests.date*.
+
+``util/doh/runner.html?testModule=dojo/tests/date``
+
 What this does is instruct the runner to look in dojo/tests and load the date.js file.
 Please note here that you do not have to put your unit tests in dojo/tests!
 The browser runner just has a default search path to look in dojo/ for a module
@@ -134,44 +136,43 @@ Example Test Module: Simple test registration
 
 .. js ::
 
-  // Declare out the name of the test module to make dojo's module loader happy.
-  dojo.provide("my.test.module");
+  define(["doh/runner"], function(doh){
 
-  doh.register("MyTests", [
-    function assertTrueTest(){
-      doh.assertTrue(true);
-      doh.assertTrue(1);
-      doh.assertTrue(!false);
-    },
-    {
-      name: "thingerTest",
-      setUp: function(){
-        this.thingerToTest = new Thinger();
-        this.thingerToTest.doStuffToInit();
-      },
-      runTest: function(){
-        doh.assertEqual("blah", this.thingerToTest.blahProp);
-        doh.assertFalse(this.thingerToTest.falseProp);
+      doh.register("MyTests", [
+        function assertTrueTest(){
+          doh.assertTrue(true);
+          doh.assertTrue(1);
+          doh.assertTrue(!false);
+        },
+        {
+          name: "thingerTest",
+          setUp: function(){
+            this.thingerToTest = new Thinger();
+            this.thingerToTest.doStuffToInit();
+          },
+          runTest: function(){
+            doh.assertEqual("blah", this.thingerToTest.blahProp);
+            doh.assertFalse(this.thingerToTest.falseProp);
+            // ...
+          },
+          tearDown: function(){
+          }
+        },
         // ...
-      },
-      tearDown: function(){
-      }
-    },
-    // ...
-  ]);
+      ]);
+
+  });
 
 Example Test Module: Module that loads other modules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. js ::
 
-  // Declare out the name of the test module to make dojo's module loader happy.
-  dojo.provide("my.test.module2");
-
-  // Require in the separate files that implement and register all the tests.
-  dojo.require("my.test.widget.Foo0");
-  dojo.require("my.test.widget.Foo1");
-  dojo.require("my.test.widget.Foo2");
+  define([
+      "my/test/widget/Foo0",
+      "my/test/widget/Foo1",
+      "my/test/widget/Foo2"
+  ]);
 
 Notes on Registering Tests
 --------------------------
@@ -495,5 +496,4 @@ See also
 ========
 
 * The numerous unit tests in dojo itself!  For example: dojo/tests/\*, dijit/tests/module.js, dojox/\*/ tests/\*, and so on.
-* `D.O.H tutorial by Medryx <http://blog.medryx.org/2008/06/08/dojo-doh-unit-testing/>`_
 * `D.O.H tutorial by IBM <http://www.ibm.com/developerworks/web/library/wa-aj-doh/index.html>`_  *(Has example code)*

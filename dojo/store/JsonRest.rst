@@ -72,6 +72,20 @@ On your server, you should look at the Range header in the request to know which
 
  Content-Range: items 0-24/66
 
+The returned total is available as a further promise on the returned promise of data which returns the total number of available rows indicated in the Content-Range header as a number, so you can retrieve it like this:
+
+.. js ::
+ 
+  var _this = this,
+    queryResults = this.store.query(this.query, this.queryOpts);
+  
+  queryResults.then(function(data){
+    queryResults.total.then(function(totalResults){
+      console.log("total results: ", totalResults);
+      console.log("go on and use data ", data, " with this ", _this);
+    })
+  })
+
 Sorting
 =======
 
@@ -101,6 +115,24 @@ If ``sortParam`` is not set, the sort value is appended without a key-value pair
 
   /FooObject/?foo=value1&sort(+foo,-bar)
 
+
+Headers
+=======
+
+Starting in Dojo 1.8, it is possible to send headers along with all requests made using the JsonRest store. This can either be done by setting the ``headers`` property of the store itself, in which case all requests will include the provided headers, or on a per-call basis by setting the ``headers`` property of the associated ``options`` object for calls to ``get``, ``add``, ``put``, ``remove``, or ``query``.
+
+If header is provided on the ``options`` object passed to a call, it will override any similarly-named headers given directly on the store.
+
+.. js ::
+ 
+  var store = new JsonRestStore({
+    target: "/FooObject/",
+    headers: { "X-Custom-Header": "Foo" } // All calls to server will include X-Custom-Header: Foo
+  });
+
+  store.query({ foo: "value1" }, {
+    headers: { "X-Custom-Header": "Bar" } // This call will include X-Custom-Header: Bar instead
+  });
 
 Misc
 ====

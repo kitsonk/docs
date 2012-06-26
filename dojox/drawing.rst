@@ -56,24 +56,56 @@ The files are laid out as such:
 Example
 -------
 
-After using the proper requires, the following is all that is needed to embed Drawing in your document:
+Here is an example of using dojox.drawing in an HTML document. The example consists of two parts: the drawing canvas itself and a customized toolbar. The require statement loads the drawing and the tools.
 
 .. html ::
  
- <div data-dojo-type="dojox.drawing.Drawing" id="drawing" style="width:800px; height:400px;"
-     plugins="[{'name':'dojox.drawing.plugins.drawing.Grid', 'options':{gap:100}}]">
- </div>
- 
- <div data-dojo-type="dojox.drawing.Toolbar" drawingId="drawing" class="drawingToolbar vertical">
-     <div tool="dojox.drawing.tools.Line" selected="false">Line</div>
-     <div tool="dojox.drawing.tools.Rect" selected="false">Rect</div>
-     <div tool="dojox.drawing.tools.Ellipse" selected="false">Ellipse</div>
-     <div tool="dojox.drawing.tools.TextBlock" selected="false">Statement</div>
-     <div tool="dojox.drawing.tools.custom.Equation" selected="false">Equation</div>
-     <div plugin="dojox.drawing.plugins.tools.Pan" options="{}">Pan</div>
-     <div plugin="dojox.drawing.plugins.tools.Zoom" options="{zoomInc:.1,minZoom:.5,maxZoom:2}">Zoom</div>
- </div>
+ <html>
+   <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <style>
+	@import url("./dojox/drawing/resources/drawing.css");
+	@import url("./dojox/drawing/resources/toolbar.css");
+     </style>
+     <script type="text/javascript" src="./dojo/dojo.js" data-dojo-config="parseOnLoad:true"></script>
+     <script type="text/javascript">
+	require([
+	    "dojo/ready", 
+	    "dojox/drawing", 
+	    "dojox/drawing/ui/dom/Toolbar", 
+	    "dojox/drawing/ui/dom/Pan",
+	    "dojox/drawing/ui/dom/Zoom",
+	    "dojox/drawing/tools/Line",
+	    "dojox/drawing/tools/Rect",
+	    "dojox/drawing/tools/Ellipse",
+	    "dojox/drawing/tools/TextBlock",
+	    "dojox/drawing/tools/custom/Equation",
+	    "dojox/drawing/plugins/drawing/Grid",
+	    "dojox/drawing/util/positioning",
+	    "dojo/parser"], 
+	function(ready) {
+	});
 
+     </script>
+   </head>
+   <body style="font-family:sans-serif;font-size:10pt">
+     <div data-dojo-type="dojox.drawing.Drawing" id="drawing" style="width:800px; height:400px;"
+	plugins="[{'name':'dojox.drawing.plugins.drawing.Grid', 'options':{gap:100}}]"></div>
+
+     <div data-dojo-type="dojox.drawing.ui.dom.Toolbar" drawingId="drawing" class="drawingToolbar horizontal">
+       <div tool="dojox.drawing.tools.Line" selected="false">Line</div>
+       <div tool="dojox.drawing.tools.Rect" selected="false">Rect</div>
+       <div tool="dojox.drawing.tools.Ellipse" selected="false">Ellipse</div>
+       <div tool="dojox.drawing.tools.TextBlock" selected="false">Statement</div>
+       <div tool="dojox.drawing.tools.custom.Equation" selected="false">Equation</div>
+       <div plugin="dojox.drawing.ui.dom.Pan" options="{}">Pan</div>
+       <div plugin="dojox.drawing.ui.dom.Zoom" options="{zoomInc:.1,minZoom:.5,maxZoom:2}">Zoom</div>
+     </div>
+     <!-- needed by TextBlock -->
+       <div id="conEdit" contenteditable="true"></div>	
+     </body>
+ </html>
+ 
 **NOTE** Due to the nature of VML, a DOCTYPE cannot be used with Drawing or any GFX work. This will force your page into quirks mode and may create a need for style adjustments.
 
 Manipulating the Drawing

@@ -12,7 +12,7 @@ Browser support
 
 The following browsers are supported. If a browser is not supported, it still may work, but no effort is taken to test unsupported browsers and any specific fix for an unsupported browser is likely not to be done:
 
-  * Firefox 3.6 (Dojo 1.6.1+ supports Firefox 4)
+  * Firefox 3.6 (Dojo 1.6.1+ also supports Firefox 4-10)
   * Safari 4/Safari 5 and Chrome 8
   * IE6, IE7, IE8 (Dojo 1.6.1+ supports IE9)
   * Opera 10.50 and later (Dojo core only)
@@ -284,9 +284,9 @@ New plugins are available for the following features:
   * :ref:`Paste image inline  <dojox/editor/plugins/LocalImage>`
   * :ref:`Batch spell check  <dojox/editor/plugins/SpellCheck>`
   * :ref:`Recognize URL as a link  <dojox/editor/plugins/AutoUrlLink>`
-  * :ref:`Set color on table cells, row, columns (background)  <dojox/editor/plugins/ColorTableCell>`
+  * :ref:`Set color on table cells, row, columns (background)  <dojox/editor/plugins/TablePlugins>`
   * :ref:`Spell Check as You Type  <dojox/editor/plugins/SpellCheck>`
-  * :ref:`Size table column via drag  <dojox/editor/plugins/ResizeTableColumn>`
+  * :ref:`Size table column via drag  <dojox/editor/plugins/TablePlugins>`
 
 
 DataGrid

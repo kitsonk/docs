@@ -14,7 +14,7 @@ How to use Dojo's cross-domain distributions
 Introduction
 ============
 
-A cross-domain Dojo build is one which can be loaded from the server other than the one where the application deployment occurs. It can be a `custom build <quickstart/custom-builds>`_ or a `CDN <http://en.wikipedia.org/wiki/Content_Delivery_Network>`_ distribution.
+A cross-domain Dojo build is one which can be loaded from the server other than the one where the application deployment occurs. It can be a `custom build <custom-builds>`_ or a `CDN <http://en.wikipedia.org/wiki/Content_Delivery_Network>`_ distribution.
 
 Advantages
 ----------
@@ -128,7 +128,7 @@ in the ``packages`` array via ``dojoConfig``:
             packages: [
                 {
                     name: "my",
-                    location: "/absolute/path/to/local/modules"
+                    location: "/absolute/path/to/local/modules/my"
                 }
             ]
         };
@@ -168,7 +168,7 @@ via ``dojoConfig``:
     <script type="text/javascript">
         var dojoConfig = {
             baseUrl: "./",
-            modulePaths: { my: "relative/path/to/local/modules" }
+            modulePaths: { my: "relative/path/to/local/modules/my" }
         };
     </script>
     
