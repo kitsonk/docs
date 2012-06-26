@@ -4,7 +4,6 @@
 Editing Dojo's Reference Guide
 ==============================
 
-
 .. contents ::
   :depth: 2
 
