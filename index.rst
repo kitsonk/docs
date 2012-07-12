@@ -4,7 +4,6 @@
 Dojo Toolkit Reference Guide
 ============================
 
-
 .. contents ::
    :depth: 2
 
