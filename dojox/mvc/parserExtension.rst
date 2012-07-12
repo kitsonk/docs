@@ -28,21 +28,45 @@ Also, the text in <span> changes when user makes a selection in combo box, as:
 * The text in <span> is bound to value property in a dojo.Stateful (titleModel).
 * The selected value of combo box is bound to the same value property in the dojo.Stateful (titleModel).
 
-.. html ::
+.. code-example::
+  :width: 240
+  :height: 80
 
-  <div>
-      Text:
-      <span data-mvc-bindings="class: at(boldTextModel, 'checked').direction(at.from).transform({format: function(value){ return value ? 'boldText' : ''; }}),
-                               innerText: at(titleModel, 'value')"></span>
-  </div>
-  <div>
-      Choose text from:
-      <select type="combo" data-mvc-bindings="value: at(titleModel, 'value')">
-          <option value="Foo">Foo</option>
-          <option value="Bar">Bar</option>
-      </select>
-  </div>
-  <div style="margin-top:8px;">
-      The text should be bold:
-      <input type="checkbox" data-mvc-bindings="checked: at(boldTextModel, 'checked')">
-  </div>
+  .. css ::
+
+    .boldText {
+        font-weight: Bold;
+    }
+
+  .. js ::
+
+    require([
+        "dojox",
+        "dojo/Stateful",
+        "dojo/parser",
+        "dojox/mvc/parserExtension",
+        "dojo/domReady!"
+    ], function(dojox, Stateful, parser){
+        titleModel = new Stateful({value: "Foo"});
+        boldTextModel = new Stateful({checked: false});
+    });
+  
+  .. html::
+
+    <script type="dojo/require">at: "dojox/mvc/at"</script>
+    <div>
+        Text:
+        <span data-mvc-bindings="class: at(boldTextModel, 'checked').direction(at.from).transform({format: function(value){ return value ? 'boldText' : ''; }}),
+                                 innerText: at(titleModel, 'value')"></span>
+    </div>
+    <div>
+        Choose text from:
+        <select type="combo" data-mvc-bindings="value: at(titleModel, 'value')">
+            <option value="Foo">Foo</option>
+            <option value="Bar">Bar</option>
+        </select>
+    </div>
+    <div style="margin-top:8px;">
+        The text should be bold:
+        <input type="checkbox" data-mvc-bindings="checked: at(boldTextModel, 'checked')">
+    </div>
