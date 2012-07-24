@@ -96,7 +96,7 @@ isCanceled()
 
 Should return ``true`` if the promise has been cancelled, otherwise ``false``.
 
-fail()
+otherwise()
 ------
 
 Adds an error callback to a promise and should return a promise with the error callback applied. It takes a single
@@ -108,7 +108,7 @@ Argument Type      Description
 errback  Function? The function that should be called when the promise is rejected.
 ======== ========= ================================================================
 
-both()
+always()
 ------
 
 Adds a single callback to operate in the case of resolution or rejection.  It takes a single argument:
@@ -122,14 +122,12 @@ callbackOrErrback Function? The function that should be called on resolution or 
 trace()
 -------
 
-Trace the promise. Any supplied arguments are emitted in trace events. It returns the original promise. The
-:ref:`dojo/promise/tracer <dojo/promise/tracer>` module will extend ``dojo/promise/Promise`` to enable this feature.
+Trace the promise. Any supplied arguments are emitted in trace events. It returns the original promise.
 
 traceRejected()
 ---------------
 
-Trace rejection of the promise. Any supplied arguments are emitted in trace events. It returns the original promise. The
-:ref:`dojo/promise/tracer <dojo/promise/tracer>` module will extend ``dojo/promise/Promise`` to enable this feature.
+Trace rejection of the promise. Any supplied arguments are emitted in trace events. It returns the original promise.
 
 See also
 ========

@@ -23,7 +23,7 @@ Introduction
 Usage
 =====
 
-Basic usage is instantiating a ``dojo/Deferred`` object, starting the thread and when it completes calling ``.resolved()`` with any results and returning the object to the consumer.  From a consumer perspective it is generally setting either a ``.then()`` callback with potentially an additional error callback as the second argument of then.  If the asynchronous process supports cancelling and it has been implemented, then the process can be cancelled via ``.cancel()``.
+Basic usage is instantiating a ``dojo/Deferred`` object, starting the thread and when it completes calling ``.resolve()`` with any results and returning the object to the consumer.  From a consumer perspective it is generally setting either a ``.then()`` callback with potentially an additional error callback as the second argument of then.  If the asynchronous process supports cancelling and it has been implemented, then the process can be cancelled via ``.cancel()``.
 
 .. js ::
 
@@ -67,6 +67,8 @@ Because ``.then()`` returns a new promise that is fulfilled when the callback co
       // do something else
     });
   });
+
+``dojo/Deferred`` contains the following properties:
 
 ================================= ======================================================================================
 Property                          Description
@@ -120,7 +122,7 @@ Examples
           deferred.resolve("success");
         }, 1000);
         
-        return deferred;
+        return deferred.promise;
       }
       
       on(dom.byId("startButton"), "click", function(){
@@ -156,7 +158,7 @@ Examples
           deferred.resolve(msg);
         }, 1000);
         
-        return deferred;
+        return deferred.promise;
       }
       
       on(dom.byId("startButton"), "click", function(){
@@ -204,7 +206,7 @@ Examples
           deferred.reject("ooops");
         }, 1500);
         
-        return deferred;
+        return deferred.promise;
       }
       
       on(dom.byId("startButton"), "click", function(){
@@ -248,7 +250,7 @@ Examples
           deferred.resolve("finished");
         }, 2000);
         
-        return deferred;
+        return deferred.promise;
       }
       
       on(dom.byId("startButton"), "click", function(){

@@ -40,7 +40,7 @@ Data binding API
 There are two data binding APIs:
 
 * :ref:`dojox/mvc/sync <dojox/mvc/sync>` provides a simple way for data binding, by keeping two :ref:`dojo/Stateful <dojo/Stateful>` objects in sync.
-* :ref:`dojox/mvc/at <dojox/mvc/at>` typically is used in ``data-dojo-props`` for declarative way of data binding, where a widget can synchronize its attribute with another :ref:`dojo/Stateful <dojo/Stateful>`. It can also be used in the first parameter of widget constructor (list of initial property values) for programmatic way of data binding.
+* :ref:`dojox/mvc/at <dojox/mvc/at>` typically is used in :ref:`data-dojo-props <dojo/parser#parser-parameters>` for declarative way of data binding, where a widget can synchronize its attribute with another :ref:`dojo/Stateful <dojo/Stateful>`. It can also be used in the first parameter of widget constructor (list of initial property values) for programmatic way of data binding.
 
 Both APIs above support:
 
@@ -71,11 +71,12 @@ A number of widgets and MVC containers, etc. are also available, including:
 * :ref:`dojox/mvc/Repeat <dojox/mvc/Repeat>` A model-bound repeater widget that binds to a data collection.
 * :ref:`dojox/mvc/Generate <dojox/mvc/Generate>` A simple example of UI generation from a supplied data model.
 * :ref:`dojox/mvc/StatefulSeries <dojox/mvc/StatefulSeries>` A chart data plugin ("series") class that watches for properties specified in :ref:`dojox/mvc/at <dojox/mvc/at>` handles in the given data.
+* :ref:`dojox/mvc/parserExtension <dojox/mvc/parserExtension>` A module to extend :ref:`dojo/parser <dojo/parser>` and/or ``dojox/mobile/parser`` so that data binding can be done for non-widgets.
 
 Advanced data model as well as its helper
 -----------------------------------------
 
-:ref:`dojox/mvc/WidgetList <dojox/mvc/WidgetList>`, :ref:`dojox/mvc/ListController <dojox/mvc/ListController>`, etc. work with array of data. For those components react to change in array, such as adds/removals, etc., :ref:`dojox/mvc/StatefulArray <dojox/mvc/StatefulArray>`, which is mostly interface-compatible to native Array, is available.
+:ref:`dojox/mvc/WidgetList <dojox/mvc/WidgetList>`, :ref:`dojox/mvc/ListController <dojox/mvc/ListController>`, etc. work with array of data. For those components react to change in array, such as adds/removals, etc., :ref:`dojox/mvc/StatefulArray <dojox/mvc/StatefulArray>`, which is mostly interface-compatible to native ``Array``, is available.
 
 For easy conversion of plain objects/arrays from/to :ref:`dojo/Stateful <dojo/Stateful>` and :ref:`dojox/mvc/StatefulArray <dojox/mvc/StatefulArray>`, the following APIs are available:
 
@@ -93,7 +94,7 @@ Deprecated APIs and their successors
 
 Though some applications use all of these features, many applications do not. For example:
 
-* As 1.8 ``dojox/mvc`` supports binding any :ref:`dojo/Stateful <dojo/Stateful>` properties, :ref:`dojox/mvc/StatefulModel <dojox/mvc/StatefulModel>`'s unique approach of converting non-object value to :ref:`dojox/mvc/StatefulModel <dojox/mvc/StatefulModel>` (with "value" attribute) is no longer needed. Regular :ref:`dojo/Stateful <dojo/Stateful>` can be used as data model, in many cases.
+* As 1.8 ``dojox/mvc`` supports binding any :ref:`dojo/Stateful <dojo/Stateful>` properties, :ref:`dojox/mvc/StatefulModel <dojox/mvc/StatefulModel>`'s unique approach of converting non-object value to :ref:`dojox/mvc/StatefulModel <dojox/mvc/StatefulModel>` (with ``value`` attribute) is no longer needed. Regular :ref:`dojo/Stateful <dojo/Stateful>` can be used as data model, in many cases.
 * Some applications do not use array in data model at all.
 * Some applications use arrays in data model in a static manner (No notification is needed for removals/additions of elements for such kind of applications).
 * Some applications would implement getters/setters in its data models to work with more complex data (e.g. XML from REST call, whose request for data item tends to be served by XPath).
