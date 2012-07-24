@@ -29,6 +29,9 @@ Also, the text in <span> changes when user makes a selection in combo box, as:
 * The selected value of combo box is bound to the same value property in the dojo.Stateful (titleModel).
 
 .. code-example::
+  :djConfig: parseOnLoad: false, async: true, mvc: {debugBindings: true}
+  :toolbar: versions, themes
+  :version: 1.8-2.0
   :width: 240
   :height: 80
 
@@ -49,6 +52,7 @@ Also, the text in <span> changes when user makes a selection in combo box, as:
     ], function(dojox, Stateful, parser){
         titleModel = new Stateful({value: "Foo"});
         boldTextModel = new Stateful({checked: false});
+        parser.parse();
     });
   
   .. html::

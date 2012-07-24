@@ -31,11 +31,11 @@ of Dojo might include fixes to support future releases of these browsers, but we
 
 * iOS 4.x, 5.x (Mobile Safari) (including all Dijit widgets except Editor, Dialog)
 
-* Android 2.2-2.3, 3.1-3.2, 4.0
+* Android 2.2-2.3, 3.1-3.2, 4.0-4.1
 
 * Blackberry 6-7
 
-* Mobile compatibility on desktop browsers: IE 8-9, Firefox 4-11, Safari 5-6, Chrome 13-18
+* Mobile compatibility on desktop browsers: IE 8-9, Firefox 4-12, Safari 5-6, Chrome 13-19
 
 TODO: Link to page with specific vendor device models tested on
 
@@ -255,6 +255,9 @@ Auto Require
 *Note* Developers should really be cautious when using this features, because you are not making your dependencies 
 clear, you may have a harder time isolating where your issue is, because the parser is automatically loading modules 
 that you may not be consciously aware of.
+
+By setting ``isDebug`` to ``true`` in your ``dojoConfig``, the ``dojo/parser`` will log to the console warnings 
+whenever it attempts to auto-load modules, so this feature is not used unintentionally.
 
 .. code-example ::
 
@@ -713,6 +716,17 @@ dojox/dgauges
   allowing you to create your own gauges as well as predefined, ready to use gauge widgets. Both circular and 
   rectangular gauges (horizontal and vertical) are supported. See :ref:`dojox/dguages <dojox/dgauges>`.
 
+dojox/gantt
+-------------
+
+- Updated source code to AMD, and refactored to use recent advances to the Dojo APIs.
+
+dojox/widget/Calendar
+---------------------
+
+- Updated source code to AMD, and refactored to use recent advances to the Dojo APIs, for dojox/widget/Calendar 
+  and associated widgets.
+
 dojox/data/LightstreamerStore
 -----------------------------
 
@@ -1004,8 +1018,29 @@ Dijit
 - Connecting to ``dijit/Menu::_openMyself()``: If you have menus on Trees etc. where you have connected to the private 
   method ``dojo/Menu::_openMyself()``, you should switch to the pattern shown above in the Menu section.
 
+- In the event passed to ``dijit/MenuItem::onClick(evt)``, ``evt.currentTarget`` now refers to the ``Menu.domNode``,
+  rather than the ``MenuItem.domNode``.  You can access the ``MenuItem`` via ``this``, assuming that you haven't
+  overridden the value of ``this``, or alternately ``registry.getEnclosingWidget(evt.target)``.
+
+- Likewise, in the event passed to ``dijit/Tree::onClick(item, node, evt)``, and
+  ``dijit/Tree::onDblClick(item, node, evt)``, ``evt.currentTarget`` now refers to the
+  ``Tree.domNode``, rather than the ``TreeNode.domNode``.   You can access the ``TreeNode`` via the ``node`` parameter.
+
 - Due to the event delegation performance improvements, if you have custom templates for TreeNode, MenuItem, or 
   TabButton, you should edit your templates to remove the ``data-dojo-attach-event="..."`` attributes.
+
+- If you have a custom popup widget with a ``handleKey()`` method, and it is accessing ``evt.charOrCode`` or ``evt.charCode``,
+  you should change it to access ``evt.keyCode`` instead.   Change ``evt.charOrCode == " "`` to ``evt.keyCode == keys.SPACE``.
+
+  Details: Some widgets used as dropdowns have a ``handleKey()`` method; ``handleKey()`` is called from ``_HasDropDown``
+  when the focus is on the ``_HasDropDown`` widget but the dropdown is open, and the user types a key.  This delegates
+  the keystroke to be processed by the dropdown widget.
+  An example is ComboBox, where focus stays in the INPUT, but the up/down arrow keys affect which choice is shown
+  in the drop down menu.
+
+  The event passed to ``handleKey()`` is now a keydown event, rather than a synthetic keypress event generated from
+  ``dojo.connect()``.
+
 
 dojox/charting
 --------------
