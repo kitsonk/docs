@@ -10,6 +10,7 @@ Dojo Toolkit Reference Guide
 Welcome
 =======
 
+
 The Dojo Toolkit Reference Guide is designed to be an in-depth resource regarding the Dojo Toolkit. The Reference Guide
 is a community effort and can be contributed to by anyone who has a `CLA <http://dojofoundation.org/about/cla>`_ in
 place with the Dojo Foundation.
